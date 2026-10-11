@@ -1,0 +1,196 @@
+{
+  "profile": "official",
+  "passed": true,
+  "checks": [
+    {
+      "check": "artifacts_present",
+      "passed": true,
+      "detail": {
+        "data": true,
+        "withdrawal": true,
+        "outcome": true,
+        "prioritization": true,
+        "retrieval": true
+      }
+    },
+    {
+      "check": "leakage_scope_applied",
+      "passed": true,
+      "detail": {
+        "records": 32593,
+        "in_scope": 25204
+      }
+    },
+    {
+      "check": "withdrawal_auc",
+      "passed": true,
+      "detail": 0.7255685308195328
+    },
+    {
+      "check": "withdrawal_calibration_ece",
+      "passed": true,
+      "detail": 0.008742683871515326
+    },
+    {
+      "check": "withdrawal_beats_logistic_baseline",
+      "passed": true,
+      "detail": {
+        "gbm": 0.7255685308195328,
+        "lr": 0.703282416548768
+      }
+    },
+    {
+      "check": "risk_tiers_monotonic",
+      "passed": true,
+      "detail": [
+        0.23588205897051473,
+        0.11739502999143102,
+        0.0487382483918852
+      ]
+    },
+    {
+      "check": "thresholds_separated",
+      "passed": true,
+      "detail": {
+        "medium": 0.0771072325145041,
+        "high": 0.14122656421985777,
+        "method": "validation_f1_above_medium",
+        "medium_recall_target": 0.8,
+        "validation": {
+          "medium": {
+            "threshold": 0.0771072325145041,
+            "precision": 0.16940143286341577,
+            "recall": 0.8002183406113537,
+            "flag_rate": 0.5142925060914008
+          },
+          "high": {
+            "threshold": 0.14122656421985777,
+            "precision": 0.23717059639389737,
+            "recall": 0.5600436681222707,
+            "flag_rate": 0.257086824745944
+          }
+        }
+      }
+    },
+    {
+      "check": "population_audit_reported",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "outcome_beats_majority",
+      "passed": true,
+      "detail": {
+        "model": 0.4851141321090571,
+        "majority": 0.16941594317284925
+      }
+    },
+    {
+      "check": "outcome_vs_logistic",
+      "passed": true,
+      "detail": {
+        "model": 0.4851141321090571,
+        "lr": 0.46013472061393024
+      }
+    },
+    {
+      "check": "prioritization_beats_random",
+      "passed": true,
+      "detail": {
+        "learned": 0.8570030056413994,
+        "random": 0.34929509584393337
+      }
+    },
+    {
+      "check": "prioritization_vs_v4_formula",
+      "passed": true,
+      "detail": {
+        "learned": 0.8570030056413994,
+        "v4": 0.762240595262346
+      }
+    },
+    {
+      "check": "retrieval_beats_random_vote_auc",
+      "passed": true,
+      "detail": {
+        "neighbour_vote_auc_withdrawal": 0.13897481219619978,
+        "neighbour_vote_auc_poor_outcome": 0.32332535885167457,
+        "outcome_agreement_at_10": 0.1868333333333333,
+        "reference_ndcg_at_10_global_ideal": 0.3219802952824843
+      }
+    },
+    {
+      "check": "retrieval_beats_random_ndcg",
+      "passed": true,
+      "detail": {
+        "neighbour_vote_auc_withdrawal": 0.13897481219619978,
+        "neighbour_vote_auc_poor_outcome": 0.32332535885167457,
+        "outcome_agreement_at_10": 0.1868333333333333,
+        "reference_ndcg_at_10_global_ideal": 0.3219802952824843
+      }
+    },
+    {
+      "check": "index_complete",
+      "passed": true,
+      "detail": {
+        "index": 25204,
+        "in_scope": 25204
+      }
+    },
+    {
+      "check": "sensitive_attributes_excluded_from_model",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "fairness_equal_opportunity_gender",
+      "passed": true,
+      "detail": 0.08185386949783308
+    },
+    {
+      "check": "fairness_equal_opportunity_highest_education",
+      "passed": true,
+      "detail": 0.14045057844530134
+    },
+    {
+      "check": "fairness_equal_opportunity_age_band",
+      "passed": true,
+      "detail": 0.04795587419451197
+    },
+    {
+      "check": "all_checkpoints_trained",
+      "passed": true,
+      "detail": [
+        "c15",
+        "c25",
+        "c40",
+        "c60"
+      ]
+    },
+    {
+      "check": "no_secrets_in_source",
+      "passed": true,
+      "detail": []
+    }
+  ],
+  "warnings": [
+    {
+      "check": "fairness_equal_opportunity_region",
+      "passed": false,
+      "detail": 0.26456876456876455
+    },
+    {
+      "check": "fairness_equal_opportunity_imd_band",
+      "passed": false,
+      "detail": 0.1949308755760369
+    },
+    {
+      "check": "fairness_equal_opportunity_disability",
+      "passed": false,
+      "detail": 0.23212560386473435
+    }
+  ],
+  "generated_at": "2026-10-11T00:32:11",
+  "official_evidence": true,
+  "note": "Metrics from a synthetic fixture must never be reported as OULAD performance."
+}
