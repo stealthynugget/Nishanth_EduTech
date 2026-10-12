@@ -1,4 +1,4 @@
-from ssa.agents import guardrails as gr
+from src.agents import guardrails as gr
 
 
 def test_protected_and_punitive_detection():
@@ -12,6 +12,13 @@ def test_numeric_grounding():
     ev = {"weighted_score": 52.34, "risk": 0.271, "missed": 2}
     assert gr.ungrounded_numbers("Score 52.3, risk 27%, missed 2", ev) == []
     assert gr.ungrounded_numbers("Score 88", ev) == [88.0]
+
+
+def test_thousands_separators_are_one_number():
+    assert gr.numbers_in("341 of 1,702 students; 12,345.5 clicks; weeks 5,10; IDs 624709, 648391") ==         [341.0, 1702.0, 12345.5, 5.0, 10.0, 624709.0, 648391.0]
+    assert gr.ungrounded_numbers("341 of 1,702 students", {"in_scope": 1702, "high": 341}) == []
+    assert gr.ungrounded_numbers("1,703 students", {"in_scope": 1702}) == []  # within the 1% tolerance, as before
+    assert gr.ungrounded_numbers("2,702 students", {"in_scope": 1702}) == [2702.0]  # a wrong total is still caught
 
 
 def test_injection_screen_and_sanitise():

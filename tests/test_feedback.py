@@ -1,7 +1,7 @@
 import pytest
 
-from ssa.feedback.loop import action_learner, calibration_learner, run_loop
-from ssa.feedback.store import FeedbackStore, UnknownRecommendation
+from src.feedback.loop import action_learner, calibration_learner, run_loop
+from src.feedback.store import FeedbackStore, UnknownRecommendation
 
 
 def _analysis(service, features):
@@ -58,5 +58,5 @@ def test_loop_applies_approved_action_stats(built, service, features):
                             "plan_accepted": False, "action_feedback": {action: {"accepted": False}}})
     plan = run_loop(built, apply=True, approved_by="test")
     assert "action_catalog_ranking" in plan["applied"]
-    from ssa.agents.evidence import action_stats
+    from src.agents.evidence import action_stats
     assert action_stats(built)[action]["demoted"] is True

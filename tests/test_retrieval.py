@@ -1,9 +1,9 @@
 import pytest
 
-from ssa.data.vocab import presentation_sort_key
-from ssa.retrieval.descriptors import parse_query
-from ssa.retrieval.hybrid import BM25, HistoricalCaseIndex
-from ssa.utils import read_json
+from src.pipeline.vocab import presentation_sort_key
+from src.rag.descriptors import parse_query
+from src.rag.hybrid import BM25, HistoricalCaseIndex
+from src.utils.common import read_json
 
 
 def test_bm25_ranks_matching_documents_first():
@@ -60,3 +60,69 @@ def test_index_manifest_mismatch_detected(built, tmp_path):
     (d / "manifest.json").write_text(__import__("json").dumps(m))
     with pytest.raises(RuntimeError):
         HistoricalCaseIndex(built, index_dir=d).load()
+
+
+def test_typed_search_benchmark_runs_and_beats_random(service):
+    from src.evaluation.search_queries import text_search_queries, text_tuning_queries
+    from src.rag.benchmark import run_text_benchmark
+    qs = text_search_queries()
+    assert len(qs) == 40 and all("descriptors" in q and "expected" in q for q in qs)
+    assert not {q["query"] for q in qs} & {q["query"] for q in text_tuning_queries()}  # tuning never sees reported queries
+    res = run_text_benchmark(service.bundle(None).index)
+    m = res["parsers"]["rules"]["modes"]
+    assert {"lexical", "hybrid", "random_corpus", "random_within_parsed_filters"} <= set(m)
+    assert all(0 <= v["precision_at_10"] <= 1 for v in m.values())
+    assert m["hybrid"]["precision_at_10"] > m["random_corpus"]["precision_at_10"]
+
+
+def test_text_weights_apply_only_to_typed_queries(service, monkeypatch):
+    idx = service.bundle(None).index
+    tuned = {"weights": {"lexical": 0.5, "dense": 0.0}, "text_weights": {"lexical": 1.0, "dense": 2.0}}
+    monkeypatch.setattr("src.rag.hybrid.read_json", lambda p, d=None: tuned if p.name == "fusion_weights.json" else (d or {}))
+    assert idx.fusion_weights()["dense"] == 0.0
+    assert idx.fusion_weights(text_only=True)["dense"] == 2.0
+
+
+def test_text_weights_follow_the_parser(service, monkeypatch):
+    idx = service.bundle(None).index
+    tuned = {"weights": {"lexical": 0.5, "dense": 0.0}, "text_weights": {"lexical": 1.0, "dense": 2.0},
+             "text_weights_by_parser": {"rules": {"lexical": 1.0, "dense": 2.0}, "llm": {"lexical": 1.0, "dense": 0.0}}}
+    monkeypatch.setattr("src.rag.hybrid.read_json", lambda p, d=None: tuned if p.name == "fusion_weights.json" else (d or {}))
+    assert idx.fusion_weights(text_only=True, parser="llm")["dense"] == 0.0
+    assert idx.fusion_weights(text_only=True, parser="rules")["dense"] == 2.0
+    assert idx.fusion_weights(text_only=True, parser="other")["dense"] == 2.0  # unknown parser: the default text weights
+    assert idx.fusion_weights(parser="llm")["dense"] == 0.0 and idx.fusion_weights(parser="llm")["lexical"] == 0.5  # profiles unaffected
+
+
+def test_queries_use_the_index_embedding_spec(service):
+    idx = service.bundle(None).index
+    old = dict(idx.manifest)
+    try:
+        idx.manifest = {**old, "embedding_model": "intfloat/e5-small-v2", "embedding_query_prefix": "query: ",
+                        "embedding_passage_prefix": "passage: "}
+        seen = []
+        idx._encode = lambda texts: seen.extend(texts) or __import__("numpy").zeros((len(texts), 4))
+        idx._qcache.clear()
+        idx._encode_query("students who stopped submitting")
+        idx._encode_query("a narrative", kind="passage")
+        assert seen == ["query: students who stopped submitting", "passage: a narrative"]
+        idx.manifest = {k: v for k, v in old.items() if not k.startswith("embedding")} | {"embedding_model": "all-MiniLM-L6-v2"}
+        assert idx._embedding_spec() == {"model": "all-MiniLM-L6-v2", "query_prefix": "", "passage_prefix": ""}  # older index
+    finally:
+        idx.manifest = old
+        del idx._encode
+        idx._qcache.clear()
+
+
+def test_dense_vectors_are_reused_for_unchanged_narratives(built):
+    import numpy as np
+
+    from src.rag.hybrid import HistoricalCaseIndex
+    idx = HistoricalCaseIndex(built)
+    calls = []
+    idx._encode = lambda texts: (calls.append(list(texts)), np.ones((len(texts), 3), np.float32))[1]
+    old = {1: ("same text", np.full(3, 7, np.float32)), 2: ("old text", np.full(3, 9, np.float32))}
+    vecs, reused = idx._encode_corpus(np.array([1, 2, 3]), ["same text", "new text", "third"], "passage: ", old)
+    assert reused == 1 and calls == [["passage: new text", "passage: third"]]
+    assert (vecs[0] == 7).all() and (vecs[1] == 1).all() and (vecs[2] == 1).all()
+    assert idx._reusable_dense({"model": "some-other-model", "query_prefix": "", "passage_prefix": ""}) == {}  # model changed

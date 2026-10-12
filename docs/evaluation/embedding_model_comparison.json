@@ -1,0 +1,175 @@
+{
+  "checkpoint": 0.4,
+  "device": "cpu",
+  "k": 10,
+  "typed_queries": "40 labelled queries (text_search_queries); hybrid ratio tuned per model on the 40 tuning queries",
+  "profile_queries": "300 in-scope students of the test presentation, earlier presentations as corpus",
+  "current_model": "all-MiniLM-L6-v2",
+  "models": [
+    {
+      "model": "all-MiniLM-L6-v2",
+      "hf_id": "sentence-transformers/all-MiniLM-L6-v2",
+      "note": "current default; 6 layers",
+      "parameters_millions": 22.7,
+      "dimensions": 384,
+      "index_mb": 36.9,
+      "corpus_docs": 25204,
+      "encode_seconds": 327.4,
+      "encode_docs_per_second": 77.0,
+      "query_prefix": null,
+      "passage_prefix": null,
+      "typed_search": {
+        "rules": {
+          "dense_precision_at_10": 0.634375,
+          "dense_behaviour_match_at_10": 0.67421875,
+          "hybrid_precision_at_10": 0.621875,
+          "hybrid_dense_weight_tuned": 2.0
+        },
+        "llm": {
+          "dense_precision_at_10": 0.714375,
+          "dense_behaviour_match_at_10": 0.67109375,
+          "hybrid_precision_at_10": 0.8618749999999998,
+          "hybrid_dense_weight_tuned": 0.0
+        }
+      },
+      "query_latency_ms": 49.8,
+      "profile_dense": {
+        "vote_auc_poor_outcome": 0.7496673402000888,
+        "vote_auc_withdrawal": 0.5356372715923278,
+        "outcome_agreement_at_10": 0.7210000000000001
+      }
+    },
+    {
+      "model": "all-mpnet-base-v2",
+      "hf_id": "sentence-transformers/all-mpnet-base-v2",
+      "note": "larger general-purpose sentence model",
+      "parameters_millions": 109.5,
+      "dimensions": 768,
+      "index_mb": 73.8,
+      "corpus_docs": 25204,
+      "encode_seconds": 1922.8,
+      "encode_docs_per_second": 13.1,
+      "query_prefix": null,
+      "passage_prefix": null,
+      "typed_search": {
+        "rules": {
+          "dense_precision_at_10": 0.566875,
+          "dense_behaviour_match_at_10": 0.61171875,
+          "hybrid_precision_at_10": 0.6368750000000001,
+          "hybrid_dense_weight_tuned": 1.0
+        },
+        "llm": {
+          "dense_precision_at_10": 0.6693749999999999,
+          "dense_behaviour_match_at_10": 0.60859375,
+          "hybrid_precision_at_10": 0.8618749999999998,
+          "hybrid_dense_weight_tuned": 0.0
+        }
+      },
+      "query_latency_ms": 109.0,
+      "profile_dense": {
+        "vote_auc_poor_outcome": 0.7301512986052929,
+        "vote_auc_withdrawal": 0.5,
+        "outcome_agreement_at_10": 0.7170000000000001
+      }
+    },
+    {
+      "model": "bge-small-en-v1.5",
+      "hf_id": "BAAI/bge-small-en-v1.5",
+      "note": "retrieval-tuned; instruction on short queries",
+      "parameters_millions": 33.4,
+      "dimensions": 384,
+      "index_mb": 36.9,
+      "corpus_docs": 25204,
+      "encode_seconds": 553.7,
+      "encode_docs_per_second": 45.5,
+      "query_prefix": "Represent this sentence for searching relevant passages: ",
+      "passage_prefix": null,
+      "typed_search": {
+        "rules": {
+          "dense_precision_at_10": 0.696875,
+          "dense_behaviour_match_at_10": 0.74609375,
+          "hybrid_precision_at_10": 0.719375,
+          "hybrid_dense_weight_tuned": 4.0
+        },
+        "llm": {
+          "dense_precision_at_10": 0.771875,
+          "dense_behaviour_match_at_10": 0.73671875,
+          "hybrid_precision_at_10": 0.8618749999999998,
+          "hybrid_dense_weight_tuned": 0.0
+        }
+      },
+      "query_latency_ms": 58.3,
+      "profile_dense": {
+        "vote_auc_poor_outcome": 0.7771918584594155,
+        "vote_auc_withdrawal": 0.4798547270457383,
+        "outcome_agreement_at_10": 0.67
+      }
+    },
+    {
+      "model": "e5-small-v2",
+      "hf_id": "intfloat/e5-small-v2",
+      "note": "retrieval-tuned; query/passage prefixes",
+      "parameters_millions": 33.4,
+      "dimensions": 384,
+      "index_mb": 36.9,
+      "corpus_docs": 25204,
+      "encode_seconds": 530.7,
+      "encode_docs_per_second": 47.5,
+      "query_prefix": "query: ",
+      "passage_prefix": "passage: ",
+      "typed_search": {
+        "rules": {
+          "dense_precision_at_10": 0.729375,
+          "dense_behaviour_match_at_10": 0.77734375,
+          "hybrid_precision_at_10": 0.736875,
+          "hybrid_dense_weight_tuned": 4.0
+        },
+        "llm": {
+          "dense_precision_at_10": 0.8018750000000001,
+          "dense_behaviour_match_at_10": 0.78046875,
+          "hybrid_precision_at_10": 0.8618749999999998,
+          "hybrid_dense_weight_tuned": 0.0
+        }
+      },
+      "query_latency_ms": 49.4,
+      "profile_dense": {
+        "vote_auc_poor_outcome": 0.8315016509782662,
+        "vote_auc_withdrawal": 0.5516967427079786,
+        "outcome_agreement_at_10": 0.7106666666666667
+      }
+    },
+    {
+      "model": "gte-small",
+      "hf_id": "thenlper/gte-small",
+      "note": "retrieval-tuned",
+      "parameters_millions": 33.4,
+      "dimensions": 384,
+      "index_mb": 36.9,
+      "corpus_docs": 25204,
+      "encode_seconds": 2844.6,
+      "encode_docs_per_second": 8.9,
+      "query_prefix": null,
+      "passage_prefix": null,
+      "typed_search": {
+        "rules": {
+          "dense_precision_at_10": 0.7318749999999999,
+          "dense_behaviour_match_at_10": 0.7804687499999999,
+          "hybrid_precision_at_10": 0.739375,
+          "hybrid_dense_weight_tuned": 4.0
+        },
+        "llm": {
+          "dense_precision_at_10": 0.806875,
+          "dense_behaviour_match_at_10": 0.78359375,
+          "hybrid_precision_at_10": 0.8618749999999998,
+          "hybrid_dense_weight_tuned": 0.0
+        }
+      },
+      "query_latency_ms": 49.0,
+      "profile_dense": {
+        "vote_auc_poor_outcome": 0.7691833817948843,
+        "vote_auc_withdrawal": 0.5056747247758483,
+        "outcome_agreement_at_10": 0.6553333333333334
+      }
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "queries": 600,
+  "k": 10,
+  "query_presentation": "2014J",
+  "corpus": "earlier presentations, same module",
+  "query_positive_rates": {
+    "withdrawn": 0.12166666666666667,
+    "poor_outcome": 0.36666666666666664
+  },
+  "modes": {
+    "hybrid": {
+      "neighbour_vote_auc_withdrawal": 0.6931844766187518,
+      "neighbour_vote_auc_poor_outcome": 0.8349760765550238,
+      "outcome_agreement_at_10": 0.7148333333333333,
+      "reference_ndcg_at_10_global_ideal": 0.8661044770467098
+    },
+    "behavioural": {
+      "neighbour_vote_auc_withdrawal": 0.6970055366379871,
+      "neighbour_vote_auc_poor_outcome": 0.8292404306220096,
+      "outcome_agreement_at_10": 0.7181666666666666,
+      "reference_ndcg_at_10_global_ideal": 0.8703634727791237
+    },
+    "lexical": {
+      "neighbour_vote_auc_withdrawal": 0.6272127056744041,
+      "neighbour_vote_auc_poor_outcome": 0.8364712918660288,
+      "outcome_agreement_at_10": 0.7078333333333333,
+      "reference_ndcg_at_10_global_ideal": 0.7541412072228056
+    },
+    "dense": {
+      "neighbour_vote_auc_withdrawal": 0.5831405474253333,
+      "neighbour_vote_auc_poor_outcome": 0.8304844497607655,
+      "outcome_agreement_at_10": 0.7206666666666667,
+      "reference_ndcg_at_10_global_ideal": 0.7320736152594541
+    },
+    "random": {
+      "neighbour_vote_auc_withdrawal": 0.554209664422552,
+      "neighbour_vote_auc_poor_outcome": 0.5120334928229665,
+      "outcome_agreement_at_10": 0.5281666666666667,
+      "reference_ndcg_at_10_global_ideal": 0.5441068784899428
+    }
+  },
+  "hybrid_minus_random": {
+    "neighbour_vote_auc_withdrawal": 0.13897481219619978,
+    "neighbour_vote_auc_poor_outcome": 0.3229425837320573,
+    "outcome_agreement_at_10": 0.18666666666666665,
+    "reference_ndcg_at_10_global_ideal": 0.321997598556767
+  },
+  "notes": [
+    "Neighbour-vote AUC and outcome agreement are non-circular: relevance comes from real future outcomes.",
+    "Reference nDCG uses an unweighted distance over all numeric features with a global ideal ranking; it partially overlaps with the behavioural channel and is a secondary diagnostic.",
+    "Hybrid uses fusion weights tuned on the validation presentation (artifacts/index/fusion_weights.json)."
+  ],
+  "index": {
+    "index_version": "5.0",
+    "built_at": "2026-10-12T10:41:37",
+    "n_docs": 25204,
+    "presentations": [
+      "2013B",
+      "2013J",
+      "2014B",
+      "2014J"
+    ],
+    "dense_channel": "built",
+    "embedding_model": "intfloat/e5-small-v2",
+    "embedding_query_prefix": "query: ",
+    "embedding_passage_prefix": "passage: ",
+    "vector_checksum": "66d383963018909a",
+    "vector_store": "lancedb",
+    "supervised_feature_weights": true,
+    "build_seconds": 478.4
+  }
+}

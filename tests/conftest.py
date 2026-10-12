@@ -4,7 +4,8 @@ and no real LLM is called."""
 import os
 
 os.environ["SSA_DISABLE_DOTENV"] = "1"
-for _k in ("OPENAI_API_KEY", "OPENAI_BASE_URL", "SSA_DATA_DIR", "SSA_ARTIFACT_DIR"):
+for _k in ("OPENAI_API_KEY", "OPENAI_BASE_URL", "ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "ANTHROPIC_BASE_URL", "LLM_PROVIDER",
+           "CLAUDE_MODEL_FAST", "CLAUDE_MODEL_MAIN", "CLAUDE_MODEL_JUDGE", "LLM_PRICE_TABLE", "LLM_ENABLED", "SSA_DATA_DIR", "SSA_ARTIFACT_DIR"):
     os.environ.pop(_k, None)
 os.environ.update({"CHECKPOINTS": "0.25,0.40", "CUTOFF_FRACTION": "0.40", "STUDENT_ASSISTANT_ADMIN_KEY": "admin-key-0123456789",
                    "SSA_DEV_MODE": "0", "STUDENT_ASSISTANT_API_KEY": "test-key-0123456789abcdef", "ENABLE_TEXT_EMBEDDINGS": "0",
@@ -19,15 +20,15 @@ API_KEY = os.environ["STUDENT_ASSISTANT_API_KEY"]
 def ssa_home(tmp_path_factory):
     home = tmp_path_factory.mktemp("ssa_home")
     os.environ["SSA_HOME"] = str(home)
-    from ssa.config import reset_settings
+    from src.utils.config import reset_settings
     reset_settings()
     return home
 
 
 @pytest.fixture(scope="session")
 def built(ssa_home):
-    from ssa.cli import main
-    from ssa.config import get_settings
+    from src.cli import main
+    from src.utils.config import get_settings
     main(["demo-data", "--n", "120"])
     try:
         main(["build", "--no-dense", "--queries", "120"])
@@ -38,7 +39,7 @@ def built(ssa_home):
 
 @pytest.fixture(scope="session")
 def service(built):
-    from ssa.service import StudentSuccessService
+    from src.services.student_success import StudentSuccessService
     return StudentSuccessService(built).warm()
 
 
@@ -49,7 +50,7 @@ def features(service):
 
 @pytest.fixture(scope="session")
 def handlers(built, service):
-    from ssa.api.handlers import Handlers
+    from src.api.handlers import Handlers
     return Handlers(built, service=service)
 
 

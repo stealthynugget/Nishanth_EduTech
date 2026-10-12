@@ -1,0 +1,255 @@
+{% set w = m.withdrawal_model %}{% set t = w.test %}{% set e = m.llm_evaluation %}{% set ag = e.agents %}
+{% set rb = m.retrieval_benchmark.modes %}{% set rg = m.ragas_eval.features %}{% set g = m.quality_gate %}
+<div class="cover" markdown="1">
+
+# Evaluation Report
+
+<div class="sub">Uplift: Student Success Assistant · retrieval, models, agents, DeepEval, RAGAS, LLM-as-judge, tests</div>
+<div class="meta">Every number is read from the evaluation artifacts by <code>scripts/build_docs.py</code>. AI evaluation run:
+{{ e.generated_at }}; generators {{ e.models.main }} / {{ e.models.fast }}, judge {{ e.models.judge }}. Release gate:
+<b>{{ "passed" if g.passed else "failed" }}</b> ({{ g.profile }} profile).</div>
+
+</div>
+
+## 1. Summary
+| Area | What was measured | Result |
+|---|---|---|
+| Withdrawal risk (week {{ primary_week }}) | ROC-AUC on the untouched test presentation, students still enrolled | {{ t.roc_auc|num }} (95% CI {{ t.roc_auc_95ci.lower|num }} to {{ t.roc_auc_95ci.upper|num }}); logistic baseline {{ w.baseline_logistic_regression_test.roc_auc|num }} |
+| Calibration | Expected calibration error (10 bins) | {{ t.ece_10|num }} |
+| Early warning at capacity | Precision when contacting the top 10% (base rate {{ t.positive_rate|pct(1) }}) | {{ w.test_capacity[1].precision|pct }} (lift {{ w.test_capacity[1].lift|num(1) }}x) |
+| Prioritisation | Precision at 10% for "will fail or withdraw" | {{ m.prioritization.test_comparison.learned_weights.at_capacity[0].precision|pct }} vs {{ m.prioritization.test_comparison.random.at_capacity[0].precision|pct }} random |
+| Retrieval (hybrid RAG) | Neighbour-vote AUC: do retrieved cases' real outcomes predict the student's? | {{ rb.hybrid.neighbour_vote_auc_poor_outcome|num }} vs {{ rb.random.neighbour_vote_auc_poor_outcome|num }} random |
+| Typed search | Precision@10 on {{ m.text_search_benchmark.queries }} labelled plain-English queries (LLM parser, hybrid) | {{ m.text_search_benchmark.parsers.llm.modes.hybrid.precision_at_10|num }} |
+| Agent plans | Plans passing every guardrail / judge pass rate | {{ ag.deterministic.final_plan_valid_rate|pct }} / {{ ag.judge.pass_rate|pct }} |
+| DeepEval | Faithfulness / answer relevancy (pass rate) | {{ ag.deepeval.aggregate.FaithfulnessMetric.pass_rate|pct }} / {{ ag.deepeval.aggregate.AnswerRelevancyMetric.pass_rate|pct }} |
+| RAGAS | Faithfulness of precedent synthesis (hallucination rate) | {{ rg.precedent_synthesis.mean.faithfulness|num }} ({{ rg.precedent_synthesis.hallucination_rate|pct(1) }}) |
+| Copilot | Golden questions answered correctly (AI / rules) | {{ e.copilot.llm.answer_correct_rate|pct }} / {{ e.copilot.rules.answer_correct_rate|pct }} |
+| Safety | Adversarial copilot prompts handled safely | {{ e.robustness.safe_rate|pct }} of {{ e.robustness.n }} |
+| Tests | Automated tests (pytest, no network, no LLM) | {{ n_tests }} tests in {{ test_files|length }} files |
+
+## 2. How the evaluation is set up
+**Honest population.** Only students still enrolled at the checkpoint are scored. The same withdrawal model scored on every
+test enrolment, including students who had already left, would report ROC-AUC
+{{ w.population_audit.all_enrolments_including_already_withdrawn.roc_auc|num }} instead of {{ t.roc_auc|num }}:
+{{ w.population_audit.already_withdrawn_share_of_test_withdrawals|pct }} of the test presentation's withdrawals had happened
+before the checkpoint. That inflated number is what an earlier version of this project reported; it is not used anywhere.
+
+**Temporal protocol.** Train {{ w.split.train|join(" + ") }}, choose everything (hyperparameters, calibration, tier
+thresholds, ranking weights, fusion weights, prompts) on {{ w.split.validation|join(", ") }}, score once on
+{{ w.split.test|join(", ") }}. Retrieval only searches presentations earlier than the query's.
+
+**Five layers for the AI features**, each catching what the previous one cannot:
+
+1. *Code checks on every output* (also in production): cited IDs exist, every number appears in the evidence, actions come
+   from the eligible catalogue, no protected, punitive, clinical or stigmatising terms, length limits. Failing output is
+   revised once or replaced by the computed fallback.
+2. *LLM-as-judge*: {{ e.models.judge }}, a different model from the generators, scores six criteria; the verdict is computed
+   from the scores in code. Order-swapped pairwise A/B against the computed plan controls for position bias.
+3. *DeepEval*: faithfulness, answer relevancy and three custom G-Eval criteria with bootstrap confidence intervals.
+4. *RAGAS*: faithfulness, response groundedness and context relevance of the retrieval-augmented outputs (hallucination
+   rate = 1 - faithfulness), with the judge model as evaluator.
+5. *Human review*: blind advisor ratings in the console (Model quality, Human review) compared with the judge by Cohen's
+   kappa. Status: {{ e.human_agreement.status }} (the panel can rate cases live).
+
+**Cost of the evaluation.** All AI evaluations call Claude through the project's client with a response cache and a
+spending cap (`LLM_BUDGET_USD`); the usage ledger records every call (`GET /api/llm/usage`).
+
+## 3. Retrieval results
+### 3.1 Similar-case retrieval for a student (profile search)
+{{ m.retrieval_benchmark.queries }} in-scope students of {{ m.retrieval_benchmark.query_presentation }} are matched against
+{{ m.retrieval_benchmark.corpus }}. Relevance comes from real later outcomes, so the benchmark is not circular.
+
+| Mode | Neighbour-vote AUC (fail or withdraw) | Neighbour-vote AUC (withdrawal) | Outcome agreement@10 | nDCG@10 |
+|---|---|---|---|---|
+{% for mode, v in rb.items() %}
+| {{ mode }} | {{ v.neighbour_vote_auc_poor_outcome|num }} | {{ v.neighbour_vote_auc_withdrawal|num }} | {{ v.outcome_agreement_at_10|num }} | {{ v.reference_ndcg_at_10_global_ideal|num }} |
+{% endfor %}
+
+### 3.2 Typed (plain-English) search
+{{ m.text_search_benchmark.queries }} labelled queries; {{ m.text_search_benchmark.relevance }}.
+
+| Query parser | Mode | Precision@10 | Filter match@10 | Behaviour match@10 |
+|---|---|---|---|---|
+{% for parser, pv in m.text_search_benchmark.parsers.items() %}
+{% for mode, v in pv.modes.items() %}
+| {{ parser }} | {{ mode }} | {{ v.precision_at_10|num }} | {{ v.filter_match_at_10|num if v.filter_match_at_10 is defined else "n/a" }} | {{ v.behaviour_match_at_10|num if v.behaviour_match_at_10 is defined else "n/a" }} |
+{% endfor %}
+{% endfor %}
+
+Example labelled queries (expected filters and behaviours):
+
+| Query | Kind | Expected filters | Expected behaviours |
+|---|---|---|---|
+{% for q in text_queries[::5] %}
+| {{ q.query }} | {{ q.kind }} | {{ q.expected|tojson_inline }} | {{ q.descriptors|map("join", " or ")|join("; ") or "-" }} |
+{% endfor %}
+
+### 3.3 Search understanding (query to filters)
+| Query set | Parser | Filter F1 | Exact match | Accepted by code checks |
+|---|---|---|---|---|
+{% for key in ("templated_rules", "templated_llm", "paraphrased_rules", "paraphrased_llm") %}
+{% set v = e.search[key] %}
+| {{ key.split("_")[0] }} ({{ v.n }}) | {{ "AI (" ~ e.models.fast ~ ")" if key.endswith("llm") else "rules" }} | {{ v.filter_f1|num }} | {{ v.exact_match|pct }} | {{ v.llm_output_accepted_rate|pct if v.llm_output_accepted_rate is not none else "n/a" }} |
+{% endfor %}
+
+{{ e.search.note }}
+
+## 4. DeepEval scores
+Agent analyses and support plans for {{ ag.deterministic.n_cases }} students across all tiers; evaluator {{ e.models.judge }};
+mean score with 95% bootstrap interval and pass rate.
+
+| Metric | Mean | 95% CI | Pass rate | Cases |
+|---|---|---|---|---|
+{% for k, v in ag.deepeval.aggregate.items() %}
+| {{ k.replace("Metric", "") }} | {{ v.mean|num(2) }} | {{ v.ci95[0]|num(2) }} to {{ v.ci95[1]|num(2) }} | {{ v.pass_rate|pct }} | {{ v.n }} |
+{% endfor %}
+
+## 5. RAGAS scores
+Evaluator {{ m.ragas_eval.judge_model }} (judge tier, never a generator). Faithfulness = share of claims supported by the
+retrieved context; hallucination rate = 1 - faithfulness.
+
+| Feature | Cases | Faithfulness | Hallucination rate | Fully supported | Response groundedness | Context relevance |
+|---|---|---|---|---|---|---|
+{% for f, v in rg.items() %}
+| {{ f.replace("_", " ") }} | {{ v.n }} | {{ v.mean.faithfulness|num }} | {{ v.hallucination_rate|pct(1) }} | {{ v.fully_supported_rate|pct }} | {{ v.mean.nv_response_groundedness|num }} | {{ v.mean.nv_context_relevance|num }} |
+{% endfor %}
+
+How to read the copilot row: copilot answers are scored whole, so sentences that explain what a metric means count as
+"unsupported" even though they are correct; every *number* in a copilot answer is separately checked against the tool
+results in code (section 7).
+
+<details markdown="1"><summary>Per-question RAGAS scores (copilot)</summary>
+
+| Question | Faithfulness | Groundedness | Context relevance |
+|---|---|---|---|
+{% for c in rg.copilot.per_case %}
+| {{ c.user_input }} | {{ c.faithfulness|num(2) }} | {{ c.nv_response_groundedness|num(2) }} | {{ c.nv_context_relevance|num(2) }} |
+{% endfor %}
+
+</details>
+
+## 6. LLM-as-judge and A/B results
+| Check | Result |
+|---|---|
+| Support plans passing every guardrail | {{ ag.deterministic.final_plan_valid_rate|pct }} |
+| Plans drafted by AI (the rest are routed to monitoring and use the computed plan by design) | {{ ag.deterministic.llm_plan_accepted_rate|pct }} |
+| Drafts that needed a revision after the critic | {{ ag.deterministic.revision_rate|pct }} |
+| High-tier students always routed to an intervention | {{ ag.deterministic.tier_routing_consistency|pct }} |
+| Judge pass rate ({{ ag.judge.judge_model }}) | {{ ag.judge.pass_rate|pct }} |
+| AI plan preferred over the computed plan (order-swapped A/B, {{ ag.pairwise_llm_vs_deterministic.n }} pairs) | {{ ag.pairwise_llm_vs_deterministic.llm_win_rate|pct }} (ties {{ ag.pairwise_llm_vs_deterministic.tie_rate|pct }}, position-consistent {{ ag.pairwise_llm_vs_deterministic.position_consistency|pct }}) |
+
+Mean judge scores (0 to 10):
+
+| Criterion | Mean |
+|---|---|
+{% for k, v in ag.judge.mean_scores.items() %}
+| {{ k.replace("_", " ") }} | {{ v|num(1) }} |
+{% endfor %}
+
+Other generated text:
+
+| Feature | Cases | Accepted by code checks | Judge |
+|---|---|---|---|
+| Precedent synthesis ("what happened to similar students") | {{ e.synthesis.n }} | {{ e.synthesis.llm_accepted_rate|pct }} | pass {{ e.synthesis.judge_pass_rate|pct }}, faithfulness {{ e.synthesis.judge_mean_faithfulness|num(1) }}/10 |
+| Cohort briefing | {{ e.briefing.n }} | {{ e.briefing.llm_accepted_rate|pct }} | pass {{ e.briefing.judge_pass_rate|pct }}, usefulness {{ e.briefing.judge_mean_usefulness|num(1) }}/10 |
+| Outreach rewrite (channel, tone, language) | {{ e.outreach.n }} | {{ e.outreach.llm_accepted_rate|pct }} | within length {{ e.outreach.length_compliance|pct }}, safe {{ e.outreach.safe_rate|pct }}, language honoured {{ e.outreach.language_honoured_rate|pct }} |
+
+## 7. Test cases
+### 7.1 Automated test suite
+`python -m pytest` runs {{ n_tests }} tests on an isolated temporary home with a synthetic OULAD-shaped fixture: no
+network, no LLM calls (a fake LLM and a mocked Anthropic SDK stand in), nothing written to real artifacts.
+
+| Test file | Tests | Covers |
+|---|---|---|
+{% set covers = {"test_api.py": "every route, auth, validation errors, FastAPI contract, console serving, route documentation", "test_pipeline.py": "snapshot features, scoping, leakage controls", "test_models.py": "risk and outcome models, calibration, tiers, explanations", "test_prioritization.py": "ranking weights, selection rule, honest test comparison", "test_retrieval.py": "hybrid search, filters, earlier-presentations-only, self-exclusion", "test_vector_store.py": "LanceDB vs NumPy parity, filters, migration", "test_workflow.py": "agent workflow, LLM rejection and fallback, no sensitive data in prompts", "test_graph.py": "LangGraph and reference orchestrator give identical results", "test_guardrails.py": "injection, protected / punitive / clinical terms, number grounding", "test_genai.py": "briefing, synthesis, outreach, query understanding with fallbacks", "test_llm.py": "Anthropic client: structured output, tool use, retries, cache, budget, ledger", "test_judge.py": "judge scoring and verdict rules", "test_fairness.py": "fairness audit, permutation null, threshold review", "test_feedback.py": "feedback store and approval-gated loop", "test_jobs.py": "background jobs, shared state across workers", "test_release.py": "release checks, secret scan"} %}
+{% for f, n in test_files.items() %}
+| `{{ f }}` | {{ n }} | {{ covers.get(f, "") }} |
+{% endfor %}
+
+### 7.2 Agent evaluation cases (support plans)
+{{ eval_cases|length }} students sampled across tiers and modules; the same cases feed the judge, the A/B, DeepEval and
+human review.
+
+| Student | Module | Tier | Route | Plan by | Violations | Judge verdict | Judge overall |
+|---|---|---|---|---|---|---|---|
+{% for c in eval_cases %}
+| {{ c.ref.id_student }} | {{ c.ref.code_module }} {{ c.ref.code_presentation }} | {{ c.ref.tier }} | {{ c.mode }} | {{ "AI" if c.plan_source.startswith("llm") else "computed" }} | {{ c.violations|length }} | {{ c.judge.verdict if c.judge else "-" }} | {{ c.judge.overall|num(1) if c.judge else "-" }} |
+{% endfor %}
+
+### 7.3 Copilot golden questions
+Questions with answers known from the computed tools; an answer counts as correct only if it contains the expected values
+and used the expected tool. AI: {{ e.copilot.llm.answer_correct_rate|pct }} correct, right tool
+{{ e.copilot.llm.tool_selection_accuracy|pct }}; rules: {{ e.copilot.rules.answer_correct_rate|pct }} correct.
+
+{% for c in rg.copilot.per_case %}
+- {{ c.user_input }}
+{% endfor %}
+
+### 7.4 Adversarial prompts (robustness)
+The check is strict: an answer counts as unsafe if it contains a flagged term anywhere, even inside a refusal. The one
+case marked "no" is a refusal ("I can't diagnose anyone...") that repeats the word from the question.
+
+| Prompt | Handled safely | How |
+|---|---|---|
+{% for c in e.robustness.cases %}
+| {{ c.prompt }} | {{ "yes" if c.safe else "no" }} | {{ c.source }}{% if c.flags %}: {{ c.flags|join("; ") }}{% endif %} |
+{% endfor %}
+
+## 8. Sample outputs
+Real responses from the running service (`docs/api/api_samples.json`).
+
+{% set an = samples.samples["POST /api/analyze"].response %}
+**Support plan for student {{ an.workflow.ref.id_student if an.workflow.ref is defined else "692826" }}** (source: {{ an.workflow.intervention_plan.source }}):
+priority "{{ an.workflow.intervention_plan.priority }}", review in {{ an.workflow.intervention_plan.review_in_days }} days.
+
+{% for a in an.workflow.intervention_plan.actions %}{% if a is mapping %}
+- {{ a.text }} ({{ a.channel }})
+{% endif %}{% endfor %}
+
+> {{ an.workflow.intervention_plan.outreach_message }}
+
+{% set ps = an.precedent_synthesis %}
+**What happened to similar students** (source: {{ ps.source }}): {{ ps.what_happened }}
+
+{% set cp = samples.samples["POST /api/copilot"].response %}
+**Copilot**, "Who should I contact first in BBB 2014J?" (source: {{ cp.source }}; grounding check
+{{ "passed" if cp.grounding.passed else "flagged numbers" }}):
+
+```text
+{{ cp.answer }}
+```
+
+{% set jd = samples.samples.get("POST /api/evaluations/judge") %}
+{% if jd %}
+**Judge verdict on that plan:** {{ jd.response.verdict }}, {{ jd.response.overall|num(1) }} of 10.
+{% endif %}
+
+## 9. Release quality gate
+`python -m src.cli quality-gate` turns the evaluation into pass / fail checks before a release. Profile:
+{{ g.profile }}; passed: {{ g.passed }}.
+
+| Check | Result |
+|---|---|
+{% for c in g.checks %}
+| {{ c.check.replace("_", " ") }} | {{ "pass" if c.passed else "FAIL" }} |
+{% endfor %}
+{% for c in g.warnings %}
+| {{ c.check.replace("_", " ") }} | warning (review with the equity office; see the fairness audit) |
+{% endfor %}
+
+<div class="pb"></div>
+
+## 10. Detailed results (model card)
+The full model card, generated from the same artifacts (`python -m src.cli report`, also in `docs/MODEL_CARD.md`).
+
+{{ model_card_body }}
+
+## 11. Reproducing these results
+```bash
+python -m src.cli build                 # data, models, index and benchmarks at all checkpoints (no LLM)
+python -m src.cli llm-eval              # AI evaluation: code checks, judge, A/B, DeepEval (calls Claude; cached, capped)
+python scripts/ragas_eval.py            # RAGAS (own environment: requirements-ragas.txt)
+python -m src.cli quality-gate --with-tests
+python -m src.cli report                # model card
+python scripts/build_docs.py            # these documents
+```

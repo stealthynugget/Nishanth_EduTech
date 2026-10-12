@@ -2,9 +2,9 @@ import json
 
 import numpy as np
 
-from ssa.models.features import SENSITIVE
-from ssa.models.risk import learn_thresholds, tier_of
-from ssa.utils import read_json
+from src.models.features import SENSITIVE
+from src.models.risk import learn_thresholds, tier_of
+from src.utils.common import read_json
 
 
 def test_learned_thresholds_are_ordered_and_meaningful():

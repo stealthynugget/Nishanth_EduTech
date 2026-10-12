@@ -1,0 +1,130 @@
+<div class="cover" markdown="1">
+
+# Dataset Details
+
+<div class="sub">Uplift: Student Success Assistant</div>
+<div class="meta">Open University Learning Analytics Dataset (OULAD). Counts in this document are read from the data files and the
+build metrics by <code>scripts/build_docs.py</code>.</div>
+
+</div>
+
+## 1. Dataset name
+**Open University Learning Analytics Dataset (OULAD)**, the dataset named in the problem statement.
+
+## 2. Dataset source
+The Open University (United Kingdom), Knowledge Media Institute. Published by Kuzilek, Hlosta and Zdrahal (2017),
+*Open University Learning Analytics dataset*, Scientific Data 4:170171, doi:10.1038/sdata.2017.171.
+Licence: Creative Commons Attribution 4.0 (CC BY 4.0). The data is anonymised by the publisher; student IDs are not
+linked to real people.
+
+## 3. Dataset link
+- Primary: <https://analyse.kmi.open.ac.uk/open_dataset> (also mirrored on Figshare, as given in the brief)
+- Alternative: the OULAD GitHub mirror referenced in the brief
+- Paper: <https://doi.org/10.1038/sdata.2017.171>
+
+## 4. Data format
+Seven CSV files (comma separated, header row, UTF-8), relational and joined on `code_module`, `code_presentation`,
+`id_student`, `id_assessment` and `id_site`. Place them in `data/raw/` (not committed; see the README).
+
+| File | What one row is | Rows (full dataset) | Rows (`data/sample_data`) |
+|---|---|---|---|
+{% for t, d in data.tables.items() %}
+| `{{ t }}` | {{ {"courses.csv": "a module presentation and its length in days", "assessments.csv": "an assessment of a presentation (type, deadline day, weight)", "vle.csv": "a learning material in the virtual learning environment", "studentInfo.csv": "a student's enrolment on a presentation: demographics and final result", "studentRegistration.csv": "registration and (if any) unregistration day for an enrolment", "studentAssessment.csv": "a submission: day submitted and score", "studentVle.csv": "a student's clicks on one material on one day"}[t] }} | {{ d.rows|thousands }} | {{ d.sample_rows|thousands }} |
+{% endfor %}
+
+Scope: {{ m.data_build.presentations|length }} presentations ({{ m.data_build.presentations|join(", ") }}) across
+7 modules (AAA to GGG), {{ m.data_build.records|thousands }} enrolments in total.
+
+## 5. Key fields
+| Table | Fields | Use in this project |
+|---|---|---|
+| studentInfo | `id_student, code_module, code_presentation, gender, region, highest_education, imd_band, age_band, num_of_prev_attempts, studied_credits, disability, final_result` | `final_result` is the **label** (Distinction / Pass / Fail / Withdrawn). Previous attempts and credits are features. The six demographic fields are **sensitive**: never model inputs, never sent to the LLM; used only for the fairness audit and as retrieval filters. |
+| studentRegistration | `code_module, code_presentation, id_student, date_registration, date_unregistration` | Registration timing is a feature. `date_unregistration` only decides who is **still enrolled** at a checkpoint (scope); it is never a feature. |
+| assessments | `code_module, code_presentation, id_assessment, assessment_type, date, weight` | Deadlines (TMA, CMA, Exam) and weights: which work was due by the checkpoint. |
+| studentAssessment | `id_assessment, id_student, date_submitted, is_banked, score` | Scores, missed work, lateness, score trend, only for submissions on or before the checkpoint day. |
+| vle | `id_site, code_module, code_presentation, activity_type, week_from, week_to` | Material types (content, resource, forum, quiz...) and planned weeks. |
+| studentVle | `code_module, code_presentation, id_student, id_site, date, sum_click` | Daily clicks: weekly engagement, inactivity streaks, trends, material coverage, up to the checkpoint. |
+| courses | `code_module, code_presentation, module_presentation_length` | Course length: checkpoints are fractions of it. |
+
+## 6. Dataset purpose
+OULAD links, for each enrolment, the student profile, the assessment record, day-by-day online learning activity and the
+final result. That is what the brief needs:
+
+- **Early warning**: predict withdrawal and the final outcome from what is known part-way through a course.
+- **Similar-case retrieval (RAG)**: every finished enrolment is a historical case with a known outcome, so "what happened
+  to students like this one" can be answered from real records.
+- **Prioritisation, explanation and trends**: assessment and engagement signals rank and explain risk; weekly activity
+  shows when struggling students diverge.
+- **Fairness**: the demographic fields let us audit the model's errors by group, without using them as inputs.
+
+## 7. Data preprocessing performed
+Implemented in `src/pipeline/pipeline.py` (`python -m src.cli prepare`), once per checkpoint.
+
+**7.1 Checkpoints ("as of" snapshots).** A snapshot is taken at {{ s.checkpoints|length }} points of each presentation:
+{% for c in s.checkpoints %}{{ (100 * c)|round|int }}% (week {{ course_week(c) }}){{ ", " if not loop.last else "" }}{% endfor %}
+of its length. Every feature uses only rows dated on or before the snapshot day.
+
+**7.2 Population scoping (the most important step).** Students who had already unregistered by the snapshot day cannot
+be helped by an early warning. They are kept in the data, marked `in_scope = 0`, and excluded from modelling, evaluation,
+retrieval and ranking. At week {{ primary_week }}: {{ m.data_build.records|thousands }} enrolments, of which
+{{ m.data_build.in_scope_records|thousands }} are in scope; {{ m.data_build.withdrawn_before_snapshot|thousands }} had
+already left ({{ m.data_build.withdrawn_before_start|thousands }} before the course started).
+
+| Checkpoint | Course week | Students still enrolled (in scope) |
+|---|---|---|
+{% for c in m.checkpoint_summary.checkpoints %}
+| {{ c.tag }} | {{ course_week(c.checkpoint) }} | {{ c.in_scope|thousands }} |
+{% endfor %}
+
+**7.3 Leakage controls** (recorded in the build metrics):
+{% for x in m.data_build.leakage_controls %}
+- {{ x }}
+{% endfor %}
+
+**7.4 Cleaning.**
+- Missing is not zero: students with no scored assessment keep empty scores plus a `no_scores_yet` flag.
+- Banked results (carried over from earlier attempts) are counted separately.
+- `studentVle.csv` (the large table) is read with compact data types and joined on integer keys, so the full build fits in
+  under 2 GB of memory.
+- Categorical values are validated against fixed vocabularies (modules, regions, education levels, age bands).
+
+**7.5 Feature engineering.** {{ features|length }} numeric features in three groups, plus the module:
+
+- *Enrolment*: previous attempts, credits, how early the student registered, late registration.
+- *Academic*: assessments due, submitted, missed (TMA and CMA separately), average / weighted / last / lowest score,
+  score trend, lateness, cohort percentiles.
+- *Engagement*: weekly clicks on a dense week grid (zero-activity weeks included), active days, recent vs early activity,
+  momentum, inactivity streaks, days since last activity, activity by material type, share of scheduled materials opened,
+  cohort percentiles.
+
+<details markdown="1"><summary>All features</summary>
+
+| Feature | Meaning |
+|---|---|
+{% for k, v in features %}
+| `{{ k }}` | {{ v }} |
+{% endfor %}
+
+</details>
+
+**7.6 Labels.** Withdrawal after the snapshot (binary, among students still enrolled) and the four-class final outcome.
+"Poor outcome" (fail or withdraw) is used for prioritisation.
+
+**7.7 Retrieval documents.** Each finished, in-scope enrolment becomes one case: its snapshot features, discretised
+descriptor tokens (for example `missed_most`, `engagement_declining`) and a short narrative for the dense channel. Numbers
+never reach the text channels; they are banded relative to the cohort. See the Design Document, section 4.
+
+**7.8 Temporal split.** Train on {{ m.withdrawal_model.split.train|join(" + ") }}, tune on
+{{ m.withdrawal_model.split.validation|join(", ") }}, test once on {{ m.withdrawal_model.split.test|join(", ") }} (the
+latest presentation, never used for any choice). Historical retrieval only searches presentations earlier than the query.
+
+## 8. Sample data (`data/sample_data/`)
+A real slice of OULAD in the original seven-table format, committed so the pipeline can be run without downloading the
+full dataset: a fixed number of students drawn (seed 42) from every module presentation, with all their rows; the
+reference tables are complete. Made by `scripts/make_sample_data.py`. Run the whole pipeline on it with:
+
+```bash
+SSA_HOME=.sample SSA_RAW_DIR=data/sample_data python -m src.cli build --no-dense
+```
+
+It is far too small for meaningful metrics; every result reported in this submission comes from the full dataset.

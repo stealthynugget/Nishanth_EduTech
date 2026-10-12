@@ -1,0 +1,133 @@
+<div class="cover" markdown="1">
+
+# API Documentation
+
+<div class="sub">Uplift: Student Success Assistant · REST API v{{ openapi.info.version }}</div>
+<div class="meta">{{ api_ops|length }} operations. Generated from the running service's OpenAPI specification; every sample
+request and response below is a real call made on {{ samples.captured_at }} (responses trimmed for length only: long lists
+show their first items and are marked "... N more").</div>
+
+</div>
+
+## 1. Overview
+| Item | Value |
+|---|---|
+| Base URL (local) | `http://127.0.0.1:8000` |
+| Start the service | `uvicorn src.main:app --reload` (from the repository root, virtual environment active) |
+| Interactive documentation | `http://127.0.0.1:8000/api/docs` (Swagger UI); OpenAPI JSON at `/api/openapi.json` |
+| Format | JSON in and out (`Content-Type: application/json`), UTF-8. `/api/copilot/stream` returns server-sent events. |
+| Authentication | Header `X-API-Key: <STUDENT_ASSISTANT_API_KEY>` on every route except `/api/health`. `SSA_DEV_MODE=1` disables the key check for local demos. `/api/feedback-loop/run` also needs `X-Admin-Key`. |
+| Course checkpoint | Most routes take `checkpoint` (share of the course: 0.15, 0.25, 0.40, 0.60 = weeks {{ weeks|join(", ") }}). Omitted = week {{ primary_week }}. |
+| Rate limit | Token bucket per client ({{ s.rate_limit_per_minute }} requests per minute by default, `RATE_LIMIT_PER_MINUTE`); 429 with `Retry-After` when exceeded. |
+| Body size | Requests above {{ (s.max_request_bytes / 1024)|int }} KB are rejected with 413. |
+| Tracing | Every response carries `X-Request-ID`; error bodies repeat it as `request_id`. |
+
+### Error format
+Every error uses one envelope: `{"error": "...", "request_id": "...", "details": [...]}` (details only for validation
+errors). Status codes: 400 invalid input, 401 missing or wrong API key, 403 admin key required, 404 unknown student,
+job or recommendation, 409 the student had already unregistered at that checkpoint, 413 body too large, 429 rate limit,
+503 artifacts not built yet (`python -m src.cli build`), 500 internal error (no internals are exposed).
+
+{% set err = samples.samples.get("error: invalid input") %}
+{% if err %}
+Example (`POST /api/predict-risk` with an invalid student reference, HTTP {{ err.status }}):
+
+```json
+{{ err.response|jsonblock }}
+```
+{% endif %}
+
+### Endpoint index
+| Method | Endpoint | Summary |
+|---|---|---|
+{% for op in api_ops %}
+| {{ op.method }} | `{{ op.path }}` | {{ op.summary }} |
+{% endfor %}
+
+{% set tagdesc = {} %}
+{% for t in tags %}{% set _ = tagdesc.update({t.name: t.description}) %}{% endfor %}
+{% set ns = namespace(tag=None) %}
+{% for op in api_ops %}
+{% if op.tag != ns.tag %}
+{% set ns.tag = op.tag %}
+
+## {{ op.tag|capitalize }}
+{{ tagdesc.get(op.tag, "") }}
+{% endif %}
+
+### <span class="method {{ op.method }}">{{ op.method }}</span> `{{ op.path }}`
+**{{ op.summary }}.** {{ op.description }}
+
+| Endpoint | HTTP method | Authentication | Responses |
+|---|---|---|---|
+| `{{ op.path }}` | {{ op.method }} | {{ op.auth }} | {{ op.codes|join(", ") }} |
+
+{% if op.params %}
+**Request format: parameters**
+
+| Name | In | Type | Required | Constraints | Description |
+|---|---|---|---|---|---|
+{% for p in op.params %}
+| `{{ p.name }}` | {{ p.in }} | {{ p.type }} | {{ "yes" if p.required else "no" }} | {{ p.constraints }} | {{ p.description }} |
+{% endfor %}
+{% endif %}
+{% if op.body_model %}
+**Request format: JSON body** (`{{ op.body_model }}`)
+
+| Field | Type | Required | Constraints | Description |
+|---|---|---|---|---|
+{% for f in op.body_fields %}
+| `{{ f.field }}` | {{ f.type }} | {{ "yes" if f.required else "no" }} | {{ f.constraints }} | {{ f.description }} |
+{% endfor %}
+
+Types written in CamelCase (for example `StudentRef`) are described once in *Appendix: shared request models*.
+{% endif %}
+{% if not op.params and not op.body_model %}
+**Request format:** no parameters or body.
+{% endif %}
+
+{% if op.resp_fields %}
+**Response format** (JSON object, HTTP {{ op.samples[0].status }}):
+{% for f in op.resp_fields %}`{{ f.field }}` ({{ f.type }}){{ ", " if not loop.last else "." }}{% endfor %}
+
+
+{% elif op.samples and op.samples[0].response is iterable and op.samples[0].response is not string %}
+**Response format:** {{ op.samples[0].note or "JSON" }}
+
+{% endif %}
+{% for smp in op.samples %}
+**Sample request**{% if smp.key != op.method ~ " " ~ op.path %} ({{ smp.key.split("(", 1)[1].rstrip(")") if "(" in smp.key else smp.key }}){% endif %}
+
+```bash
+{{ curl(smp) }}
+```
+
+**Sample response** (HTTP {{ smp.status }}, {{ smp.seconds }} s{% if smp.note %}; {{ smp.note }}{% endif %})
+
+```json
+{{ smp.response|jsonblock }}
+```
+{% endfor %}
+{% if not op.samples %}
+_No sample captured for this route._
+{% endif %}
+
+---
+{% endfor %}
+
+<div class="pb"></div>
+
+## Appendix: shared request models
+Models used inside the request bodies above.
+
+{% for mdl in api_models %}
+### {{ mdl.name }}
+{{ mdl.description }}
+
+| Field | Type | Required | Constraints | Description |
+|---|---|---|---|---|
+{% for f in mdl.fields %}
+| `{{ f.field }}` | {{ f.type }} | {{ "yes" if f.required else "no" }} | {{ f.constraints }} | {{ f.description }} |
+{% endfor %}
+
+{% endfor %}

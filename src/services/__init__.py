@@ -1,4 +1,1 @@
-"""Service layer orchestration for Student Success Assistant."""
-from ssa.service import StudentSuccessService, NotFound, AlreadyWithdrawn
-
-__all__ = ["StudentSuccessService", "NotFound", "AlreadyWithdrawn"]
+"""Application services: the student-success service (one model bundle per checkpoint) and app storage."""

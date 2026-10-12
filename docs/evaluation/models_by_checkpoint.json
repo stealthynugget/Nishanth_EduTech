@@ -1,0 +1,176 @@
+{
+  "checkpoints": [
+    {
+      "checkpoint": 0.15,
+      "tag": "c15",
+      "approx_week": 5.6,
+      "in_scope": 27157,
+      "withdrawal": {
+        "n": 9056,
+        "positive_rate": 0.1791077738515901,
+        "roc_auc": 0.6861329556239586,
+        "pr_auc": 0.31596324382933005,
+        "brier": 0.1375645397337802,
+        "log_loss": 0.4386839182790676,
+        "ece_10": 0.01671667210011917,
+        "roc_auc_95ci": {
+          "lower": 0.6726869926462788,
+          "upper": 0.6988289295009363,
+          "n_boot": 300
+        }
+      },
+      "thresholds": {
+        "medium": 0.1289293491758349,
+        "high": 0.17476850860365434,
+        "method": "validation_f1_above_medium",
+        "medium_recall_target": 0.8,
+        "validation": {
+          "medium": {
+            "threshold": 0.1289293491758349,
+            "precision": 0.2204773312039748,
+            "recall": 0.8000643915003219,
+            "flag_rate": 0.6226727805093641
+          },
+          "high": {
+            "threshold": 0.17476850860365434,
+            "precision": 0.2710938622969671,
+            "recall": 0.6072118480360592,
+            "flag_rate": 0.38434340644163306
+          }
+        }
+      },
+      "outcome_macro_f1": 0.39688722999549914,
+      "p_poor_auc": 0.7660114493351569,
+      "prioritization_precision_at_10": 0.8653421633554084
+    },
+    {
+      "checkpoint": 0.25,
+      "tag": "c25",
+      "approx_week": 9.4,
+      "in_scope": 26241,
+      "withdrawal": {
+        "n": 8746,
+        "positive_rate": 0.1500114337983078,
+        "roc_auc": 0.7003070619008248,
+        "pr_auc": 0.2893076585124664,
+        "brier": 0.11885072598961065,
+        "log_loss": 0.3902793676902645,
+        "ece_10": 0.010904285528292363,
+        "roc_auc_95ci": {
+          "lower": 0.6863913226323176,
+          "upper": 0.715114630435492,
+          "n_boot": 300
+        }
+      },
+      "thresholds": {
+        "medium": 0.10061204937892895,
+        "high": 0.17260539970977043,
+        "method": "validation_f1_above_medium",
+        "medium_recall_target": 0.8,
+        "validation": {
+          "medium": {
+            "threshold": 0.10061204937892895,
+            "precision": 0.18578727357176034,
+            "recall": 0.8,
+            "flag_rate": 0.6153186624749929
+          },
+          "high": {
+            "threshold": 0.17260539970977043,
+            "precision": 0.2535238841033673,
+            "recall": 0.518,
+            "flag_rate": 0.29196913403829666
+          }
+        }
+      },
+      "outcome_macro_f1": 0.45418854380349244,
+      "p_poor_auc": 0.8170959077333816,
+      "prioritization_precision_at_10": 0.952
+    },
+    {
+      "checkpoint": 0.4,
+      "tag": "c40",
+      "approx_week": 15.0,
+      "in_scope": 25204,
+      "withdrawal": {
+        "n": 8377,
+        "positive_rate": 0.11257013250567029,
+        "roc_auc": 0.7255685308195328,
+        "pr_auc": 0.26301911267610545,
+        "brier": 0.09263649781211399,
+        "log_loss": 0.3186435406111674,
+        "ece_10": 0.008742683871515326,
+        "roc_auc_95ci": {
+          "lower": 0.7076739828305996,
+          "upper": 0.7400489384532395,
+          "n_boot": 300
+        }
+      },
+      "thresholds": {
+        "medium": 0.0771072325145041,
+        "high": 0.14122656421985777,
+        "method": "validation_f1_above_medium",
+        "medium_recall_target": 0.8,
+        "validation": {
+          "medium": {
+            "threshold": 0.0771072325145041,
+            "precision": 0.16940143286341577,
+            "recall": 0.8002183406113537,
+            "flag_rate": 0.5142925060914008
+          },
+          "high": {
+            "threshold": 0.14122656421985777,
+            "precision": 0.23717059639389737,
+            "recall": 0.5600436681222707,
+            "flag_rate": 0.257086824745944
+          }
+        }
+      },
+      "outcome_macro_f1": 0.4851141321090571,
+      "p_poor_auc": 0.852497671709831,
+      "prioritization_precision_at_10": 0.9785202863961814
+    },
+    {
+      "checkpoint": 0.6,
+      "tag": "c60",
+      "approx_week": 22.5,
+      "in_scope": 23926,
+      "withdrawal": {
+        "n": 7893,
+        "positive_rate": 0.05815279361459521,
+        "roc_auc": 0.773455500635073,
+        "pr_auc": 0.1759725473938002,
+        "brier": 0.051573399075260505,
+        "log_loss": 0.19528650671707165,
+        "ece_10": 0.00821672230077138,
+        "roc_auc_95ci": {
+          "lower": 0.7534974022505441,
+          "upper": 0.7943149085329547,
+          "n_boot": 300
+        }
+      },
+      "thresholds": {
+        "medium": 0.0522041202593983,
+        "high": 0.11602418553873413,
+        "method": "validation_f1_above_medium",
+        "medium_recall_target": 0.8,
+        "validation": {
+          "medium": {
+            "threshold": 0.0522041202593983,
+            "precision": 0.13661022521782015,
+            "recall": 0.8005780346820809,
+            "flag_rate": 0.37940497723445393
+          },
+          "high": {
+            "threshold": 0.11602418553873413,
+            "precision": 0.2027220630372493,
+            "recall": 0.5452793834296724,
+            "flag_rate": 0.17414083452878437
+          }
+        }
+      },
+      "outcome_macro_f1": 0.530947817139334,
+      "p_poor_auc": 0.9108563502745604,
+      "prioritization_precision_at_10": 0.9885931558935361
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+# Rebuild the submission documents (PDFs, diagram, README): python scripts/build_docs.py
+# After installing: python -m playwright install chromium
+-r requirements.txt
+jinja2>=3.1,<4
+markdown>=3.6,<4
+playwright>=1.45,<2

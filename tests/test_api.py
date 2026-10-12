@@ -4,9 +4,9 @@ import time
 
 import pytest
 
-from ssa.api import schemas as S
-from ssa.feedback.store import UnknownRecommendation
-from ssa.service import AlreadyWithdrawn, NotFound
+from src.api import schemas as S
+from src.feedback.store import UnknownRecommendation
+from src.services.student_success import AlreadyWithdrawn, NotFound
 from tests.conftest import API_KEY, ref_of
 
 H = {"X-API-Key": API_KEY}
@@ -17,6 +17,15 @@ def test_config_and_overview(handlers):
     assert [c["checkpoint"] for c in cfg["checkpoints"]] == [0.25, 0.4]
     ov = handlers.overview()
     assert ov["totals"]["in_scope"] > 0 and ov["presentations"]
+    assert set(cfg["split"]) >= {"train", "test"}  # the console labels presentations by their role
+
+
+def test_course_week_matches_cohort_snapshot_week(handlers):
+    """Every page and the report name a checkpoint's week with one rule: the pipeline's snapshot day // 7."""
+    from src.utils.config import course_week
+    assert [course_week(c) for c in (0.15, 0.25, 0.4, 0.6)] == [5, 9, 15, 22]
+    c = handlers.cohort("AAA", "2014J", 0.4)
+    assert course_week(0.4, c["course_length_days"]) == c["snapshot_week"]
 
 
 def test_students_list_sorted_and_filtered(handlers):
@@ -106,7 +115,8 @@ def test_fastapi_contract(built, service):
     pytest.importorskip("fastapi")
     pytest.importorskip("httpx")
     from fastapi.testclient import TestClient
-    from ssa.api.app import create_app
+
+    from src.api.app import create_app
     c = TestClient(create_app(built, service))
     assert c.get("/api/health").status_code == 200
     assert c.get("/api/ready").status_code == 401
@@ -126,7 +136,104 @@ def test_fastapi_contract(built, service):
 
 
 def test_rate_limiter_token_bucket():
-    from ssa.api.security import TokenBucketLimiter
+    from src.api.security import TokenBucketLimiter
     lim = TokenBucketLimiter(3)
     assert [lim.allow("ip")[0] for _ in range(4)] == [True, True, True, False]
     assert lim.allow("other")[0]
+
+
+WHAT_IF_FIELDS = ("weighted_score", "mean_score", "last_score", "min_score", "max_score", "missed_rate", "days_since_last_activity",
+                  "clicks_pct")
+
+
+def test_what_if_unchanged_record_gives_no_warnings(handlers, service, features):
+    import math
+    rows = features[(features["in_scope"] == 1) & features[list(WHAT_IF_FIELDS)].notna().all(axis=1)]
+    b = service.bundle(None)
+
+    def stored(r):
+        return {k: float(r[k]) for k in WHAT_IF_FIELDS if not math.isnan(float(r[k]))}
+    # prefer a record whose own stored values are already outside the training range: the case that used to warn
+    ood_rows = [r for _, r in rows.iterrows() if service._ood(stored(r), b)]
+    r = ood_rows[0] if ood_rows else rows.iloc[0]
+    ref = {"id_student": int(r["id_student"]), "code_module": r["code_module"], "code_presentation": r["code_presentation"]}
+    same = handlers.predict(S.PredictRequest.model_validate({"student": ref, "what_if": stored(r)}))
+    assert same["input_quality"]["out_of_distribution"] == []
+    # control: a value the user really moved far outside the training range is still flagged
+    moved = handlers.predict(S.PredictRequest.model_validate({"student": ref, "what_if": {"days_since_last_activity": 299}}))
+    assert [o["field"] for o in moved["input_quality"]["out_of_distribution"]] == ["days_since_last_activity"]
+
+
+def _sse(text: str) -> list[tuple[str, dict]]:
+    out = []
+    for block in text.strip().split("\n\n"):
+        lines = dict(line.split(": ", 1) for line in block.splitlines() if ": " in line)
+        out.append((lines["event"], json.loads(lines["data"])))
+    return out
+
+
+def test_copilot_stream_rules_branch(built, service):
+    pytest.importorskip("fastapi")
+    from fastapi.testclient import TestClient
+
+    from src.api.app import create_app
+    c = TestClient(create_app(built, service))
+    with c.stream("POST", "/api/copilot/stream", json={"question": "overview of AAA 2014J"}, headers=H) as r:
+        assert r.status_code == 200 and r.headers["content-type"].startswith("text/event-stream")
+        events = _sse(r.read().decode())
+    kinds = [k for k, _ in events]
+    assert kinds[:2] == ["tool_call", "tool_result"] and kinds[-2:] == ["text", "done"]
+    done = events[-1][1]
+    assert done["source"] == "rules" and events[-2][1]["delta"] == done["answer"]
+    assert c.post("/api/copilot/stream", json={"question": "x"}, headers={}).status_code == 401
+
+
+def test_console_spa_fallback(built, service):
+    from pathlib import Path
+
+    from fastapi.testclient import TestClient
+
+    from src.api.app import create_app
+    if not (Path(__file__).resolve().parents[1] / "frontend" / "dist" / "index.html").exists():
+        pytest.skip("console not built")
+    c = TestClient(create_app(built, service))
+    deep = c.get("/students/AAA/2014J/123")
+    assert deep.status_code == 200 and "<div id=\"root\">" in deep.text
+    assert c.get("/assets/missing-file.js").status_code == 404
+    assert c.get("/api/nope", headers=H).status_code == 404
+
+
+def test_human_review_labels_and_agreement(handlers, built):
+    import json
+
+    from src.api import schemas as S
+    rows = [{"ref": {"id_student": 100 + i, "code_module": "AAA", "code_presentation": "2014J", "tier": "High"}, "plan_source": "llm",
+             "judge": {"verdict": "PASS" if i % 2 else "REVIEW", "scores": {"x": 1.0}, "overall": 8.0 if i % 2 else 4.0}} for i in range(6)]
+    path = built.global_metrics_dir / "llm_evaluation_cases.jsonl"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("\n".join(json.dumps(r) for r in rows), encoding="utf-8")
+    try:
+        hr = handlers.human_review()
+        assert hr["labelled"] == 0 and len(hr["cases"]) == 6 and "verdict" not in json.dumps(hr["cases"])  # blind: no judge verdict
+        for r in rows:
+            v = r["judge"]["verdict"]
+            hr = handlers.human_label(S.HumanLabelRequest(**{k: r["ref"][k] for k in ("id_student", "code_module", "code_presentation")},
+                                                          verdict=v, overall=r["judge"]["overall"], reviewer="tester", notes="ok"))
+        assert hr["labelled"] == 6 and hr["agreement"]["verdict_agreement"] == 1.0
+        hr = handlers.human_label(S.HumanLabelRequest(id_student=100, code_module="AAA", code_presentation="2014J", verdict="PASS",
+                                                      overall=9, reviewer="tester"))
+        assert hr["labelled"] == 6 and hr["agreement"]["verdict_agreement"] < 1.0  # a re-rating replaces, never duplicates
+    finally:
+        path.unlink(missing_ok=True)
+        (built.global_metrics_dir / "human_labels.jsonl").unlink(missing_ok=True)
+
+
+def test_every_route_is_documented():
+    """docs/API_Documentation and Swagger read summaries from src/api/route_docs.py; a new route needs an entry there."""
+    from src.api.app import create_app
+    from src.api.route_docs import ROUTE_DOCS, api_routes
+    app = create_app()
+    routes = {(m, r.path) for r in api_routes(app.routes) for m in r.methods}
+    assert routes == set(ROUTE_DOCS), (routes ^ set(ROUTE_DOCS))
+    spec = app.openapi()
+    assert spec["paths"]["/api/retrieve-similar"]["post"]["summary"] == ROUTE_DOCS[("POST", "/api/retrieve-similar")][0]

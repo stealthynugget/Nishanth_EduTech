@@ -1,0 +1,122 @@
+{
+  "queries": 40,
+  "k": 10,
+  "corpus": "all indexed enrolments (typed search has no query student)",
+  "relevance": "a returned case is relevant when it meets every expected filter and shows every expected behaviour",
+  "hybrid_text_weights": {
+    "behavioural": 1.0,
+    "lexical": 1.0,
+    "dense": 4.0
+  },
+  "hybrid_text_weights_by_parser": {
+    "rules": {
+      "behavioural": 1.0,
+      "lexical": 1.0,
+      "dense": 4.0
+    },
+    "llm": {
+      "behavioural": 1.0,
+      "lexical": 1.0,
+      "dense": 0.0
+    }
+  },
+  "notes": [
+    "random_corpus = a random case from the whole corpus; random_within_parsed_filters = a random case among those passing the parser's filters (isolates what the ranking adds beyond filtering)."
+  ],
+  "parsers": {
+    "rules": {
+      "modes": {
+        "lexical": {
+          "precision_at_10": 0.521875,
+          "filter_match_at_10": 0.735,
+          "behaviour_match_at_10": 0.52734375,
+          "empty_results": 6
+        },
+        "hybrid": {
+          "precision_at_10": 0.736875,
+          "filter_match_at_10": 0.8925000000000001,
+          "behaviour_match_at_10": 0.78359375,
+          "empty_results": 0
+        },
+        "dense": {
+          "precision_at_10": 0.729375,
+          "filter_match_at_10": 0.8925000000000001,
+          "behaviour_match_at_10": 0.77734375,
+          "empty_results": 0
+        },
+        "random_corpus": {
+          "precision_at_10": 0.07080126170449136
+        },
+        "random_within_parsed_filters": {
+          "precision_at_10": 0.3695669427256843
+        }
+      },
+      "precision_by_query_kind": {
+        "templated": {
+          "lexical": 0.6682692307692307,
+          "hybrid": 0.7990384615384615,
+          "dense": 0.7836538461538461
+        },
+        "paraphrase": {
+          "lexical": 0.3333333333333333,
+          "hybrid": 0.45,
+          "dense": 0.45
+        },
+        "behaviour_paraphrase": {
+          "lexical": 0.1875,
+          "hybrid": 0.75,
+          "dense": 0.7625
+        }
+      },
+      "parser_exact_filter_match": 0.825,
+      "seconds": 20.6
+    },
+    "llm": {
+      "modes": {
+        "lexical": {
+          "precision_at_10": 0.8618749999999998,
+          "filter_match_at_10": 0.985,
+          "behaviour_match_at_10": 0.84609375,
+          "empty_results": 0
+        },
+        "hybrid": {
+          "precision_at_10": 0.8618749999999998,
+          "filter_match_at_10": 0.985,
+          "behaviour_match_at_10": 0.84609375,
+          "empty_results": 0
+        },
+        "dense": {
+          "precision_at_10": 0.8018750000000001,
+          "filter_match_at_10": 0.9775,
+          "behaviour_match_at_10": 0.78046875,
+          "empty_results": 0
+        },
+        "random_corpus": {
+          "precision_at_10": 0.07080126170449136
+        },
+        "random_within_parsed_filters": {
+          "precision_at_10": 0.4590541995076228
+        }
+      },
+      "precision_by_query_kind": {
+        "templated": {
+          "lexical": 0.7874999999999999,
+          "hybrid": 0.7874999999999999,
+          "dense": 0.7644230769230769
+        },
+        "paraphrase": {
+          "lexical": 1.0,
+          "hybrid": 1.0,
+          "dense": 1.0
+        },
+        "behaviour_paraphrase": {
+          "lexical": 1.0,
+          "hybrid": 1.0,
+          "dense": 0.7749999999999999
+        }
+      },
+      "parser_exact_filter_match": 0.975,
+      "seconds": 1.7
+    }
+  }
+}

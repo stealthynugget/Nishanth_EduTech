@@ -1,0 +1,90 @@
+{
+  "queries": 300,
+  "query_presentation": "2014J",
+  "mode": "hybrid",
+  "production": {
+    "precedents_shown": 6,
+    "outcome_neighbourhood": 50,
+    "candidate_pool": 200,
+    "rrf_k": 60
+  },
+  "top_k": {
+    "k=3": {
+      "vote_auc_poor_outcome": 0.7844857325908038,
+      "vote_auc_withdrawal": 0.5296788105776871,
+      "outcome_agreement": 0.7133333333333334
+    },
+    "k=6": {
+      "vote_auc_poor_outcome": 0.8214232911142871,
+      "vote_auc_withdrawal": 0.5813188060379071,
+      "outcome_agreement": 0.7166666666666667
+    },
+    "k=10": {
+      "vote_auc_poor_outcome": 0.8324133852446898,
+      "vote_auc_withdrawal": 0.5739984110770628,
+      "outcome_agreement": 0.7069999999999999
+    },
+    "k=20": {
+      "vote_auc_poor_outcome": 0.8384998275097334,
+      "vote_auc_withdrawal": 0.581772784019975,
+      "outcome_agreement": 0.7065
+    },
+    "k=50": {
+      "vote_auc_poor_outcome": 0.8395840520427775,
+      "vote_auc_withdrawal": 0.6639995460220178,
+      "outcome_agreement": 0.6976000000000001
+    },
+    "k=6 random": {
+      "vote_auc_poor_outcome": 0.4352422256172688,
+      "vote_auc_withdrawal": 0.601123595505618,
+      "outcome_agreement": 0.5077777777777777
+    },
+    "seconds": 145.4
+  },
+  "candidate_pool": {
+    "pool=50": {
+      "vote_auc_poor_outcome": 0.8312305948450053,
+      "vote_auc_withdrawal": 0.5934627170582226,
+      "outcome_agreement": 0.7060000000000001
+    },
+    "pool=100": {
+      "vote_auc_poor_outcome": 0.8236163816470357,
+      "vote_auc_withdrawal": 0.5646918624446713,
+      "outcome_agreement": 0.7026666666666667
+    },
+    "pool=200": {
+      "vote_auc_poor_outcome": 0.8324133852446898,
+      "vote_auc_withdrawal": 0.5739984110770628,
+      "outcome_agreement": 0.7069999999999999
+    },
+    "pool=500": {
+      "vote_auc_poor_outcome": 0.8307624069784633,
+      "vote_auc_withdrawal": 0.5816592895244581,
+      "outcome_agreement": 0.707
+    },
+    "seconds": 86.7
+  },
+  "rrf_k": {
+    "rrf_k=10": {
+      "vote_auc_poor_outcome": 0.8343847025774974,
+      "vote_auc_withdrawal": 0.618601747815231,
+      "outcome_agreement": 0.7113333333333334
+    },
+    "rrf_k=30": {
+      "vote_auc_poor_outcome": 0.832216253511409,
+      "vote_auc_withdrawal": 0.6056633753262965,
+      "outcome_agreement": 0.7090000000000001
+    },
+    "rrf_k=60": {
+      "vote_auc_poor_outcome": 0.8324133852446898,
+      "vote_auc_withdrawal": 0.5739984110770628,
+      "outcome_agreement": 0.7069999999999999
+    },
+    "rrf_k=100": {
+      "vote_auc_poor_outcome": 0.833275836577793,
+      "vote_auc_withdrawal": 0.5643513789581206,
+      "outcome_agreement": 0.7096666666666667
+    },
+    "seconds": 22.5
+  }
+}

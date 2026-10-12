@@ -15,4 +15,29 @@ artifacts/*
 !artifacts/.gitkeep
 frontend/node_modules/
 .demo/
-pytest_temp/
+docs/screenshots/_deck_*.jpg
+docs/screenshots/step5-review/
+
+# DeepEval local state
+.deepeval/
+
+# Isolated RAGAS environment (scripts/ragas_eval.py)
+.venv-ragas/
+
+# coverage output
+.coverage
+coverage.json
+htmlcov/
+
+# Sample-data build home (README quick check) and scratch output
+.sample/
+*.tmp.html
+
+# Local development notes and assistant configuration (kept on disk, not published)
+CLAUDE.md
+CLAUDE.local.md
+AGENTS.md
+.claude/
+.agents/
+VERSION
+docs/development/

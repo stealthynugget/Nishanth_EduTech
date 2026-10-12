@@ -1,0 +1,250 @@
+{
+  "judge_model": "claude-opus-5-5",
+  "cases_file": "artifacts\\metrics\\rag_cases.jsonl",
+  "metrics": [
+    "faithfulness",
+    "nv_response_groundedness",
+    "nv_context_relevance"
+  ],
+  "features": {
+    "copilot": {
+      "n": 10,
+      "mean": {
+        "faithfulness": 0.8335,
+        "nv_response_groundedness": 0.9,
+        "nv_context_relevance": 1.0
+      },
+      "unscored": {
+        "faithfulness": 0,
+        "nv_response_groundedness": 0,
+        "nv_context_relevance": 0
+      },
+      "hallucination_rate": 0.1665,
+      "fully_supported_rate": 0.0,
+      "per_case": [
+        {
+          "user_input": "What is the risk tier of student 2207874 in AAA 2014J?",
+          "faithfulness": 0.8571428571,
+          "nv_response_groundedness": 0.75,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "What is the risk tier of student 650105 in CCC 2014J?",
+          "faithfulness": 0.8125,
+          "nv_response_groundedness": 1.0,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "What is the risk tier of student 650849 in CCC 2014J?",
+          "faithfulness": 0.85,
+          "nv_response_groundedness": 1.0,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "What is the risk tier of student 644369 in CCC 2014J?",
+          "faithfulness": 0.7692307692,
+          "nv_response_groundedness": 1.0,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "Who should I contact first in BBB 2014J?",
+          "faithfulness": 0.8823529412,
+          "nv_response_groundedness": 1.0,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "Give me an overview of BBB 2014J: how many students are in the High tier?",
+          "faithfulness": 0.9375,
+          "nv_response_groundedness": 1.0,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "Who should I contact first in FFF 2014J?",
+          "faithfulness": 0.7941176471,
+          "nv_response_groundedness": 1.0,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "Give me an overview of FFF 2014J: how many students are in the High tier?",
+          "faithfulness": 0.9375,
+          "nv_response_groundedness": 1.0,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "Which factors are most associated with failing or withdrawing?",
+          "faithfulness": 0.8947368421,
+          "nv_response_groundedness": 0.5,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "How accurate is the withdrawal model?",
+          "faithfulness": 0.6,
+          "nv_response_groundedness": 0.75,
+          "nv_context_relevance": 1.0
+        }
+      ]
+    },
+    "precedent_synthesis": {
+      "n": 22,
+      "mean": {
+        "faithfulness": 0.9644,
+        "nv_response_groundedness": 0.9205,
+        "nv_context_relevance": 1.0
+      },
+      "unscored": {
+        "faithfulness": 0,
+        "nv_response_groundedness": 0,
+        "nv_context_relevance": 0
+      },
+      "hallucination_rate": 0.0356,
+      "fully_supported_rate": 0.4091,
+      "per_case": [
+        {
+          "user_input": "What happened to earlier students similar to this High-tier student (main drivers: Missed assessments, Missed-assessment percentile in cohort, Tutor-marked assignments missed, Assessments due so far), and what does it imply for them?",
+          "faithfulness": 0.92,
+          "nv_response_groundedness": 1.0,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "What happened to earlier students similar to this High-tier student (main drivers: Average assessment score, Lowest score, Late submission rate, Module), and what does it imply for them?",
+          "faithfulness": 0.8571428571,
+          "nv_response_groundedness": 0.75,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "What happened to earlier students similar to this High-tier student (main drivers: Lowest score, Late submission rate, Average assessment score, Recent engagement momentum), and what does it imply for them?",
+          "faithfulness": 0.9615384615,
+          "nv_response_groundedness": 1.0,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "What happened to earlier students similar to this High-tier student (main drivers: Missed assessments, Average days submitted before deadline, Average assessment score, Score percentile in cohort), and what does it imply for them?",
+          "faithfulness": 0.8965517241,
+          "nv_response_groundedness": 1.0,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "What happened to earlier students similar to this High-tier student (main drivers: Module, Recent engagement momentum, Missed assessments, Average days submitted before deadline), and what does it imply for them?",
+          "faithfulness": 1.0,
+          "nv_response_groundedness": 1.0,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "What happened to earlier students similar to this High-tier student (main drivers: Lowest score, Engagement decline ratio, Recent engagement momentum, Average assessment score), and what does it imply for them?",
+          "faithfulness": 0.935483871,
+          "nv_response_groundedness": 0.75,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "What happened to earlier students similar to this High-tier student (main drivers: Average assessment score, Lowest score, Module, Scheduled materials so far), and what does it imply for them?",
+          "faithfulness": 0.9666666667,
+          "nv_response_groundedness": 1.0,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "What happened to earlier students similar to this High-tier student (main drivers: Average assessment score, Lowest score, Score percentile in cohort, Highest score), and what does it imply for them?",
+          "faithfulness": 1.0,
+          "nv_response_groundedness": 1.0,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "What happened to earlier students similar to this Low-tier student (main drivers: Missed assessments, Score percentile in cohort, Highest score, Average days submitted before deadline), and what does it imply for them?",
+          "faithfulness": 0.9677419355,
+          "nv_response_groundedness": 0.75,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "What happened to earlier students similar to this Low-tier student (main drivers: Assessments due so far, Score percentile in cohort, Average assessment score, Credits studied this term), and what does it imply for them?",
+          "faithfulness": 1.0,
+          "nv_response_groundedness": 0.75,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "What happened to earlier students similar to this Low-tier student (main drivers: Missed assessments, Tutor-marked assignments missed, Average days submitted before deadline, Homepage visits), and what does it imply for them?",
+          "faithfulness": 0.9545454545,
+          "nv_response_groundedness": 1.0,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "What happened to earlier students similar to this Low-tier student (main drivers: Score percentile in cohort, Missed assessments, Highest score, Average assessment score), and what does it imply for them?",
+          "faithfulness": 1.0,
+          "nv_response_groundedness": 1.0,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "What happened to earlier students similar to this Low-tier student (main drivers: Average assessment score, Score percentile in cohort, Missed assessments, Average days submitted before deadline), and what does it imply for them?",
+          "faithfulness": 0.9259259259,
+          "nv_response_groundedness": 1.0,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "What happened to earlier students similar to this Low-tier student (main drivers: Average assessment score, Score percentile in cohort, Distinct resources used, Missed assessments), and what does it imply for them?",
+          "faithfulness": 1.0,
+          "nv_response_groundedness": 1.0,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "What happened to earlier students similar to this Low-tier student (main drivers: Missed assessments, Tutor-marked assignments missed, Highest score, Module), and what does it imply for them?",
+          "faithfulness": 0.9615384615,
+          "nv_response_groundedness": 0.5,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "What happened to earlier students similar to this Medium-tier student (main drivers: Missed assessments, Score percentile in cohort, Average assessment score, Missed-assessment percentile in cohort), and what does it imply for them?",
+          "faithfulness": 1.0,
+          "nv_response_groundedness": 1.0,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "What happened to earlier students similar to this Medium-tier student (main drivers: Module, Missed assessments, Scheduled materials so far, Highest score), and what does it imply for them?",
+          "faithfulness": 0.9666666667,
+          "nv_response_groundedness": 1.0,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "What happened to earlier students similar to this Medium-tier student (main drivers: Missed assessments, Average assessment score, Score percentile in cohort, Missed-assessment percentile in cohort), and what does it imply for them?",
+          "faithfulness": 0.9615384615,
+          "nv_response_groundedness": 1.0,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "What happened to earlier students similar to this Medium-tier student (main drivers: Lowest score, Average assessment score, Assessments due so far, Average days submitted before deadline), and what does it imply for them?",
+          "faithfulness": 0.9411764706,
+          "nv_response_groundedness": 1.0,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "What happened to earlier students similar to this Medium-tier student (main drivers: Average days submitted before deadline, Late submission rate, Score percentile in cohort, Credits studied this term), and what does it imply for them?",
+          "faithfulness": 1.0,
+          "nv_response_groundedness": 1.0,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "What happened to earlier students similar to this Medium-tier student (main drivers: Recent engagement momentum, Engagement decline ratio, Missed assessments, Average assessment score), and what does it imply for them?",
+          "faithfulness": 1.0,
+          "nv_response_groundedness": 0.75,
+          "nv_context_relevance": 1.0
+        },
+        {
+          "user_input": "What happened to earlier students similar to this Medium-tier student (main drivers: Module, Average days submitted before deadline, Missed assessments, Scheduled materials so far), and what does it imply for them?",
+          "faithfulness": 1.0,
+          "nv_response_groundedness": 1.0,
+          "nv_context_relevance": 1.0
+        }
+      ]
+    }
+  },
+  "seconds": 270.1,
+  "estimated_cost_usd": 2.5975,
+  "usage": {
+    "calls": 192,
+    "cached": 60,
+    "errors": 0,
+    "latency_s": 783.201,
+    "prompt_tokens": 528,
+    "completion_tokens": 80039,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 198918,
+    "estimated_cost_usd": 2.597482
+  }
+}

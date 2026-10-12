@@ -1,0 +1,120 @@
+{
+  "engine": "xgboost",
+  "split": {
+    "method": "temporal",
+    "train": [
+      "2013B",
+      "2013J"
+    ],
+    "validation": [
+      "2014B"
+    ],
+    "test": [
+      "2014J"
+    ]
+  },
+  "classes": [
+    "Distinction",
+    "Pass",
+    "Fail",
+    "Withdrawn"
+  ],
+  "class_weighting_selection": {
+    "none": {
+      "val_macro_f1": 0.40139663358405087,
+      "val_accuracy": 0.6078266711454484
+    },
+    "sqrt_inverse": {
+      "val_macro_f1": 0.49306079530270724,
+      "val_accuracy": 0.6202552905609674
+    },
+    "inverse": {
+      "val_macro_f1": 0.510841042018475,
+      "val_accuracy": 0.5759153510245213
+    }
+  },
+  "chosen_weighting": "inverse",
+  "temperature": 1.2571218600409884,
+  "test": {
+    "accuracy": 0.541243882058016,
+    "balanced_accuracy": 0.5143961611619158,
+    "macro_f1": 0.4851141321090571,
+    "weighted_f1": 0.5495702282770905,
+    "log_loss": 0.9278045404629285,
+    "per_class": {
+      "Distinction": {
+        "precision": 0.41467221644120705,
+        "recall": 0.6847079037800687,
+        "f1-score": 0.5165262475696695,
+        "support": 1164.0
+      },
+      "Pass": {
+        "precision": 0.7063378262116432,
+        "recall": 0.5737246680642907,
+        "f1-score": 0.6331619537275064,
+        "support": 4293.0
+      },
+      "Fail": {
+        "precision": 0.539880629408573,
+        "recall": 0.5032878098128477,
+        "f1-score": 0.5209424083769634,
+        "support": 1977.0
+      },
+      "Withdrawn": {
+        "precision": 0.248,
+        "recall": 0.295864262990456,
+        "f1-score": 0.269825918762089,
+        "support": 943.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        797,
+        288,
+        27,
+        52
+      ],
+      [
+        969,
+        2463,
+        467,
+        394
+      ],
+      [
+        88,
+        494,
+        995,
+        400
+      ],
+      [
+        68,
+        242,
+        354,
+        279
+      ]
+    ],
+    "n": 8377
+  },
+  "poor_outcome_from_p_fail_plus_p_withdrawn_test": {
+    "n": 8377,
+    "positive_rate": 0.3485734749910469,
+    "roc_auc": 0.852497671709831,
+    "pr_auc": 0.8022035016972414,
+    "brier": 0.14253536604662345,
+    "log_loss": 0.4421124022067144,
+    "ece_10": 0.05586172224097721
+  },
+  "baselines_test": {
+    "majority_class": {
+      "accuracy": 0.5124746329234809,
+      "macro_f1": 0.16941594317284925
+    },
+    "multinomial_logistic": {
+      "accuracy": 0.5055509132147546,
+      "macro_f1": 0.46013472061393024,
+      "balanced_accuracy": 0.5082680213589115
+    }
+  },
+  "population": "in_scope (enrolled at snapshot)",
+  "train_seconds": 12.0
+}

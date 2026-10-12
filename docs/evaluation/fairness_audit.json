@@ -1,0 +1,1382 @@
+{
+  "population": "in_scope test presentation",
+  "threshold": "High tier",
+  "model_uses_sensitive_attributes": false,
+  "sufficient_sample_rule": "n >= 50, at least 30 withdrawn and 30 not withdrawn",
+  "attributes": {
+    "gender": {
+      "groups": {
+        "F": {
+          "n": 3564,
+          "positives": 389,
+          "observed_rate": 0.10914702581369248,
+          "mean_predicted": 0.09999064578591339,
+          "mean_predicted_among_withdrawn": 0.1540729676733354,
+          "selection_rate_high": 0.22109988776655443,
+          "tpr_high": 0.4524421593830334,
+          "tpr_high_ci95": [
+            0.40368477443506035,
+            0.5021296810604879
+          ],
+          "fpr_high": 0.19275590551181102,
+          "ppv_high": 0.2233502538071066,
+          "sufficient_sample": true
+        },
+        "M": {
+          "n": 4813,
+          "positives": 554,
+          "observed_rate": 0.11510492416372325,
+          "mean_predicted": 0.10666858001814268,
+          "mean_predicted_among_withdrawn": 0.16959188047608562,
+          "selection_rate_high": 0.25202576355703304,
+          "tpr_high": 0.5342960288808665,
+          "tpr_high_ci95": [
+            0.492664299929906,
+            0.575455395696953
+          ],
+          "fpr_high": 0.2153087579243954,
+          "ppv_high": 0.24402308326463315,
+          "sufficient_sample": true
+        }
+      },
+      "equal_opportunity_gap": 0.08185386949783308,
+      "selection_rate_ratio": 0.8772908160102444,
+      "max_calibration_gap": 0.00915638002777909,
+      "groups_excluded_small_sample": [],
+      "gap_null": {
+        "method": "1000 permutations of group labels among withdrawn students",
+        "median": 0.02059339415143896,
+        "p95": 0.06435087654172045,
+        "p_value": 0.012987012987012988,
+        "within_module_median": 0.08622961773686111,
+        "within_module_p_value": 0.5984015984015985
+      },
+      "verdict": "beyond chance overall, but explained by which modules the groups study",
+      "lowest_tpr_group": "F",
+      "highest_tpr_group": "M",
+      "proxies": {
+        "F": {
+          "membership_auc_from_model_inputs": 0.8240139115372858,
+          "most_different_inputs": [
+            {
+              "feature": "code_module=BBB",
+              "label": "code_module=BBB",
+              "standardised_mean_difference": 0.9916912913322449
+            },
+            {
+              "feature": "assessments_due",
+              "label": "Assessments due so far",
+              "standardised_mean_difference": -0.7991920709609985
+            },
+            {
+              "feature": "snapshot_day",
+              "label": "Course day of snapshot",
+              "standardised_mean_difference": -0.7774022817611694
+            },
+            {
+              "feature": "score_std",
+              "label": "Score variability",
+              "standardised_mean_difference": 0.5828773975372314
+            }
+          ]
+        },
+        "M": {
+          "membership_auc_from_model_inputs": 0.8240139115372858,
+          "most_different_inputs": [
+            {
+              "feature": "code_module=BBB",
+              "label": "code_module=BBB",
+              "standardised_mean_difference": -0.9916912913322449
+            },
+            {
+              "feature": "assessments_due",
+              "label": "Assessments due so far",
+              "standardised_mean_difference": 0.7991920709609985
+            },
+            {
+              "feature": "snapshot_day",
+              "label": "Course day of snapshot",
+              "standardised_mean_difference": 0.7774022817611694
+            },
+            {
+              "feature": "score_std",
+              "label": "Score variability",
+              "standardised_mean_difference": -0.5828773975372314
+            }
+          ]
+        }
+      },
+      "threshold_review": {
+        "current_threshold": 0.14122656421985777,
+        "target_tpr": 0.5005302226935313,
+        "groups": {
+          "F": {
+            "current_tpr": 0.4524421593830334,
+            "current_selection_rate": 0.22109988776655443,
+            "current_ppv": 0.2233502538071066,
+            "equalising_threshold": 0.12784503834855696,
+            "tpr_at_equalising": 0.5012853470437018,
+            "selection_rate_at_equalising": 0.2609427609427609,
+            "ppv_at_equalising": 0.20967741935483872,
+            "change_in_flagged_students": 142
+          },
+          "M": {
+            "current_tpr": 0.5342960288808665,
+            "current_selection_rate": 0.25202576355703304,
+            "current_ppv": 0.24402308326463315,
+            "equalising_threshold": 0.1485444640690048,
+            "tpr_at_equalising": 0.5018050541516246,
+            "selection_rate_at_equalising": 0.2327030957822564,
+            "ppv_at_equalising": 0.24821428571428572,
+            "change_in_flagged_students": -93
+          }
+        }
+      }
+    },
+    "region": {
+      "groups": {
+        "East Anglian Region": {
+          "n": 773,
+          "positives": 69,
+          "observed_rate": 0.08926261319534282,
+          "mean_predicted": 0.10088338768489123,
+          "mean_predicted_among_withdrawn": 0.16992080328989195,
+          "selection_rate_high": 0.2186287192755498,
+          "tpr_high": 0.5797101449275363,
+          "tpr_high_ci95": [
+            0.46207193076612163,
+            0.6889406774138196
+          ],
+          "fpr_high": 0.18323863636363635,
+          "ppv_high": 0.23668639053254437,
+          "sufficient_sample": true
+        },
+        "East Midlands Region": {
+          "n": 563,
+          "positives": 56,
+          "observed_rate": 0.0994671403197158,
+          "mean_predicted": 0.0999105732318264,
+          "mean_predicted_among_withdrawn": 0.17011120683499317,
+          "selection_rate_high": 0.23801065719360567,
+          "tpr_high": 0.5357142857142857,
+          "tpr_high_ci95": [
+            0.4070395665724008,
+            0.6598035659641625
+          ],
+          "fpr_high": 0.20512820512820512,
+          "ppv_high": 0.22388059701492538,
+          "sufficient_sample": true
+        },
+        "Ireland": {
+          "n": 391,
+          "positives": 44,
+          "observed_rate": 0.11253196930946291,
+          "mean_predicted": 0.08978301514792499,
+          "mean_predicted_among_withdrawn": 0.14038959803086748,
+          "selection_rate_high": 0.1636828644501279,
+          "tpr_high": 0.36363636363636365,
+          "tpr_high_ci95": [
+            0.23783334127491423,
+            0.5113389272110895
+          ],
+          "fpr_high": 0.138328530259366,
+          "ppv_high": 0.25,
+          "sufficient_sample": true
+        },
+        "London Region": {
+          "n": 741,
+          "positives": 84,
+          "observed_rate": 0.11336032388663968,
+          "mean_predicted": 0.1070229753306311,
+          "mean_predicted_among_withdrawn": 0.168293978477204,
+          "selection_rate_high": 0.25775978407557354,
+          "tpr_high": 0.4880952380952381,
+          "tpr_high_ci95": [
+            0.3840817181332218,
+            0.5931500262794481
+          ],
+          "fpr_high": 0.228310502283105,
+          "ppv_high": 0.21465968586387435,
+          "sufficient_sample": true
+        },
+        "North Region": {
+          "n": 478,
+          "positives": 59,
+          "observed_rate": 0.12343096234309624,
+          "mean_predicted": 0.10143189772379717,
+          "mean_predicted_among_withdrawn": 0.1578126693130289,
+          "selection_rate_high": 0.22594142259414227,
+          "tpr_high": 0.5084745762711864,
+          "tpr_high_ci95": [
+            0.3843492802145344,
+            0.6315637455518369
+          ],
+          "fpr_high": 0.18615751789976134,
+          "ppv_high": 0.2777777777777778,
+          "sufficient_sample": true
+        },
+        "North Western Region": {
+          "n": 669,
+          "positives": 78,
+          "observed_rate": 0.11659192825112108,
+          "mean_predicted": 0.1143826798612505,
+          "mean_predicted_among_withdrawn": 0.18729333182162497,
+          "selection_rate_high": 0.28101644245142005,
+          "tpr_high": 0.6282051282051282,
+          "tpr_high_ci95": [
+            0.5173084842745487,
+            0.7270660147577283
+          ],
+          "fpr_high": 0.23519458544839256,
+          "ppv_high": 0.26063829787234044,
+          "sufficient_sample": true
+        },
+        "Scotland": {
+          "n": 1187,
+          "positives": 156,
+          "observed_rate": 0.13142375737152484,
+          "mean_predicted": 0.10134472206889415,
+          "mean_predicted_among_withdrawn": 0.14875578884915377,
+          "selection_rate_high": 0.2333614153327717,
+          "tpr_high": 0.4807692307692308,
+          "tpr_high_ci95": [
+            0.4037732126661303,
+            0.5586896255436974
+          ],
+          "fpr_high": 0.1959262851600388,
+          "ppv_high": 0.27075812274368233,
+          "sufficient_sample": true
+        },
+        "South East Region": {
+          "n": 535,
+          "positives": 57,
+          "observed_rate": 0.10654205607476636,
+          "mean_predicted": 0.10487212717799034,
+          "mean_predicted_among_withdrawn": 0.178595001776944,
+          "selection_rate_high": 0.2467289719626168,
+          "tpr_high": 0.5087719298245614,
+          "tpr_high_ci95": [
+            0.38259680329032353,
+            0.6338393193625982
+          ],
+          "fpr_high": 0.21548117154811716,
+          "ppv_high": 0.2196969696969697,
+          "sufficient_sample": true
+        },
+        "South Region": {
+          "n": 770,
+          "positives": 99,
+          "observed_rate": 0.12857142857142856,
+          "mean_predicted": 0.0997117112036986,
+          "mean_predicted_among_withdrawn": 0.15332533782974275,
+          "selection_rate_high": 0.21688311688311687,
+          "tpr_high": 0.43434343434343436,
+          "tpr_high_ci95": [
+            0.340964792974754,
+            0.5326272164844532
+          ],
+          "fpr_high": 0.18479880774962743,
+          "ppv_high": 0.25748502994011974,
+          "sufficient_sample": true
+        },
+        "South West Region": {
+          "n": 613,
+          "positives": 67,
+          "observed_rate": 0.10929853181076672,
+          "mean_predicted": 0.10679572312873585,
+          "mean_predicted_among_withdrawn": 0.16596632203476896,
+          "selection_rate_high": 0.2463295269168026,
+          "tpr_high": 0.5522388059701493,
+          "tpr_high_ci95": [
+            0.4335740153183886,
+            0.6652379821520243
+          ],
+          "fpr_high": 0.2087912087912088,
+          "ppv_high": 0.24503311258278146,
+          "sufficient_sample": true
+        },
+        "Wales": {
+          "n": 609,
+          "positives": 60,
+          "observed_rate": 0.09852216748768473,
+          "mean_predicted": 0.10442279416471204,
+          "mean_predicted_among_withdrawn": 0.14931875987123877,
+          "selection_rate_high": 0.22988505747126436,
+          "tpr_high": 0.36666666666666664,
+          "tpr_high_ci95": [
+            0.2562073884620827,
+            0.4931723263320327
+          ],
+          "fpr_high": 0.21493624772313297,
+          "ppv_high": 0.15714285714285714,
+          "sufficient_sample": true
+        },
+        "West Midlands Region": {
+          "n": 576,
+          "positives": 66,
+          "observed_rate": 0.11458333333333333,
+          "mean_predicted": 0.10890614646405863,
+          "mean_predicted_among_withdrawn": 0.1683586254334683,
+          "selection_rate_high": 0.2725694444444444,
+          "tpr_high": 0.5303030303030303,
+          "tpr_high_ci95": [
+            0.41157476624932443,
+            0.645697690280881
+          ],
+          "fpr_high": 0.23921568627450981,
+          "ppv_high": 0.2229299363057325,
+          "sufficient_sample": true
+        },
+        "Yorkshire Region": {
+          "n": 472,
+          "positives": 48,
+          "observed_rate": 0.1016949152542373,
+          "mean_predicted": 0.10835676094494999,
+          "mean_predicted_among_withdrawn": 0.18017279724597737,
+          "selection_rate_high": 0.2605932203389831,
+          "tpr_high": 0.5208333333333334,
+          "tpr_high_ci95": [
+            0.3832899563598438,
+            0.6552890998421255
+          ],
+          "fpr_high": 0.23113207547169812,
+          "ppv_high": 0.2032520325203252,
+          "sufficient_sample": true
+        }
+      },
+      "equal_opportunity_gap": 0.26456876456876455,
+      "selection_rate_ratio": 0.5824672144528487,
+      "max_calibration_gap": 0.03007903530263069,
+      "groups_excluded_small_sample": [],
+      "gap_null": {
+        "method": "1000 permutations of group labels among withdrawn students",
+        "median": 0.20795454545454545,
+        "p95": 0.29399038461538457,
+        "p_value": 0.14385614385614387,
+        "within_module_median": 0.22272727272727275,
+        "within_module_p_value": 0.22777222777222778
+      },
+      "verdict": "within chance: random group labels give a gap this large at these group sizes",
+      "lowest_tpr_group": "Ireland",
+      "highest_tpr_group": "North Western Region",
+      "proxies": {
+        "Ireland": {
+          "membership_auc_from_model_inputs": 0.729738999771339,
+          "most_different_inputs": [
+            {
+              "feature": "registration_days_before_start",
+              "label": "How early the student registered",
+              "standardised_mean_difference": -0.729645848274231
+            },
+            {
+              "feature": "score_slope",
+              "label": "Score trajectory",
+              "standardised_mean_difference": -0.46970346570014954
+            },
+            {
+              "feature": "late_registration",
+              "label": "Registered after start",
+              "standardised_mean_difference": 0.46740996837615967
+            },
+            {
+              "feature": "code_module=BBB",
+              "label": "code_module=BBB",
+              "standardised_mean_difference": 0.4673821032047272
+            }
+          ]
+        },
+        "North Western Region": {
+          "membership_auc_from_model_inputs": 0.552452056101517,
+          "most_different_inputs": [
+            {
+              "feature": "registration_days_before_start",
+              "label": "How early the student registered",
+              "standardised_mean_difference": 0.20399397611618042
+            },
+            {
+              "feature": "score_pct",
+              "label": "Score percentile in cohort",
+              "standardised_mean_difference": -0.13451316952705383
+            },
+            {
+              "feature": "tma_missed",
+              "label": "Tutor-marked assignments missed",
+              "standardised_mean_difference": 0.13287575542926788
+            },
+            {
+              "feature": "planned_coverage",
+              "label": "Share of scheduled materials opened",
+              "standardised_mean_difference": -0.11312567442655563
+            }
+          ]
+        }
+      },
+      "threshold_review": {
+        "current_threshold": 0.14122656421985777,
+        "target_tpr": 0.5005302226935313,
+        "groups": {
+          "East Anglian Region": {
+            "current_tpr": 0.5797101449275363,
+            "current_selection_rate": 0.2186287192755498,
+            "current_ppv": 0.23668639053254437,
+            "equalising_threshold": 0.14995133769797125,
+            "tpr_at_equalising": 0.5072463768115942,
+            "selection_rate_at_equalising": 0.19663648124191463,
+            "ppv_at_equalising": 0.23026315789473684,
+            "change_in_flagged_students": -17
+          },
+          "East Midlands Region": {
+            "current_tpr": 0.5357142857142857,
+            "current_selection_rate": 0.23801065719360567,
+            "current_ppv": 0.22388059701492538,
+            "equalising_threshold": 0.15500477144501743,
+            "tpr_at_equalising": 0.5178571428571429,
+            "selection_rate_at_equalising": 0.2024866785079929,
+            "ppv_at_equalising": 0.2543859649122807,
+            "change_in_flagged_students": -20
+          },
+          "Ireland": {
+            "current_tpr": 0.36363636363636365,
+            "current_selection_rate": 0.1636828644501279,
+            "current_ppv": 0.25,
+            "equalising_threshold": 0.1056114809369418,
+            "tpr_at_equalising": 0.5227272727272727,
+            "selection_rate_at_equalising": 0.2813299232736573,
+            "ppv_at_equalising": 0.20909090909090908,
+            "change_in_flagged_students": 46
+          },
+          "London Region": {
+            "current_tpr": 0.4880952380952381,
+            "current_selection_rate": 0.25775978407557354,
+            "current_ppv": 0.21465968586387435,
+            "equalising_threshold": 0.13423663102919772,
+            "tpr_at_equalising": 0.5119047619047619,
+            "selection_rate_at_equalising": 0.2726045883940621,
+            "ppv_at_equalising": 0.21287128712871287,
+            "change_in_flagged_students": 11
+          },
+          "North Region": {
+            "current_tpr": 0.5084745762711864,
+            "current_selection_rate": 0.22594142259414227,
+            "current_ppv": 0.2777777777777778,
+            "equalising_threshold": 0.14184872192100004,
+            "tpr_at_equalising": 0.5084745762711864,
+            "selection_rate_at_equalising": 0.22384937238493724,
+            "ppv_at_equalising": 0.2803738317757009,
+            "change_in_flagged_students": -1
+          },
+          "North Western Region": {
+            "current_tpr": 0.6282051282051282,
+            "current_selection_rate": 0.28101644245142005,
+            "current_ppv": 0.26063829787234044,
+            "equalising_threshold": 0.17727618383362048,
+            "tpr_at_equalising": 0.5128205128205128,
+            "selection_rate_at_equalising": 0.19730941704035873,
+            "ppv_at_equalising": 0.30303030303030304,
+            "change_in_flagged_students": -56
+          },
+          "Scotland": {
+            "current_tpr": 0.4807692307692308,
+            "current_selection_rate": 0.2333614153327717,
+            "current_ppv": 0.27075812274368233,
+            "equalising_threshold": 0.13695453449638506,
+            "tpr_at_equalising": 0.5064102564102564,
+            "selection_rate_at_equalising": 0.2476832350463353,
+            "ppv_at_equalising": 0.2687074829931973,
+            "change_in_flagged_students": 17
+          },
+          "South East Region": {
+            "current_tpr": 0.5087719298245614,
+            "current_selection_rate": 0.2467289719626168,
+            "current_ppv": 0.2196969696969697,
+            "equalising_threshold": 0.14222534315028207,
+            "tpr_at_equalising": 0.5087719298245614,
+            "selection_rate_at_equalising": 0.2467289719626168,
+            "ppv_at_equalising": 0.2196969696969697,
+            "change_in_flagged_students": 0
+          },
+          "South Region": {
+            "current_tpr": 0.43434343434343436,
+            "current_selection_rate": 0.21688311688311687,
+            "current_ppv": 0.25748502994011974,
+            "equalising_threshold": 0.13064567447245937,
+            "tpr_at_equalising": 0.5050505050505051,
+            "selection_rate_at_equalising": 0.2506493506493506,
+            "ppv_at_equalising": 0.25906735751295334,
+            "change_in_flagged_students": 26
+          },
+          "South West Region": {
+            "current_tpr": 0.5522388059701493,
+            "current_selection_rate": 0.2463295269168026,
+            "current_ppv": 0.24503311258278146,
+            "equalising_threshold": 0.1446949896694476,
+            "tpr_at_equalising": 0.5074626865671642,
+            "selection_rate_at_equalising": 0.233278955954323,
+            "ppv_at_equalising": 0.23776223776223776,
+            "change_in_flagged_students": -8
+          },
+          "Wales": {
+            "current_tpr": 0.36666666666666664,
+            "current_selection_rate": 0.22988505747126436,
+            "current_ppv": 0.15714285714285714,
+            "equalising_threshold": 0.12101781869102585,
+            "tpr_at_equalising": 0.5166666666666667,
+            "selection_rate_at_equalising": 0.30870279146141216,
+            "ppv_at_equalising": 0.16489361702127658,
+            "change_in_flagged_students": 48
+          },
+          "West Midlands Region": {
+            "current_tpr": 0.5303030303030303,
+            "current_selection_rate": 0.2725694444444444,
+            "current_ppv": 0.2229299363057325,
+            "equalising_threshold": 0.14553503716609326,
+            "tpr_at_equalising": 0.5151515151515151,
+            "selection_rate_at_equalising": 0.2569444444444444,
+            "ppv_at_equalising": 0.22972972972972974,
+            "change_in_flagged_students": -9
+          },
+          "Yorkshire Region": {
+            "current_tpr": 0.5208333333333334,
+            "current_selection_rate": 0.2605932203389831,
+            "current_ppv": 0.2032520325203252,
+            "equalising_threshold": 0.14168758423509067,
+            "tpr_at_equalising": 0.5208333333333334,
+            "selection_rate_at_equalising": 0.2605932203389831,
+            "ppv_at_equalising": 0.2032520325203252,
+            "change_in_flagged_students": 0
+          }
+        }
+      }
+    },
+    "highest_education": {
+      "groups": {
+        "A Level or Equivalent": {
+          "n": 3744,
+          "positives": 390,
+          "observed_rate": 0.10416666666666667,
+          "mean_predicted": 0.10456495292435318,
+          "mean_predicted_among_withdrawn": 0.1603012927850725,
+          "selection_rate_high": 0.23958333333333334,
+          "tpr_high": 0.48205128205128206,
+          "tpr_high_ci95": [
+            0.43287625971613264,
+            0.5315764542683727
+          ],
+          "fpr_high": 0.21138938580799047,
+          "ppv_high": 0.20958751393534003,
+          "sufficient_sample": true
+        },
+        "HE Qualification": {
+          "n": 1435,
+          "positives": 152,
+          "observed_rate": 0.1059233449477352,
+          "mean_predicted": 0.0950542956654883,
+          "mean_predicted_among_withdrawn": 0.15465288061887764,
+          "selection_rate_high": 0.2034843205574913,
+          "tpr_high": 0.5,
+          "tpr_high_ci95": [
+            0.4214973393163167,
+            0.5785026606836833
+          ],
+          "fpr_high": 0.16835541699142634,
+          "ppv_high": 0.2602739726027397,
+          "sufficient_sample": true
+        },
+        "Lower Than A Level": {
+          "n": 3031,
+          "positives": 379,
+          "observed_rate": 0.12504124051468163,
+          "mean_predicted": 0.10740773570390275,
+          "mean_predicted_among_withdrawn": 0.17030977812766696,
+          "selection_rate_high": 0.25470141867370505,
+          "tpr_high": 0.525065963060686,
+          "tpr_high_ci95": [
+            0.47479076676796017,
+            0.5748381136880821
+          ],
+          "fpr_high": 0.2160633484162896,
+          "ppv_high": 0.25777202072538863,
+          "sufficient_sample": true
+        },
+        "No Formal quals": {
+          "n": 61,
+          "positives": 9,
+          "observed_rate": 0.14754098360655737,
+          "mean_predicted": 0.11960741118644548,
+          "mean_predicted_among_withdrawn": 0.1663535435596566,
+          "selection_rate_high": 0.39344262295081966,
+          "tpr_high": 0.4444444444444444,
+          "tpr_high_ci95": [
+            0.188775429471914,
+            0.7333526542559703
+          ],
+          "fpr_high": 0.38461538461538464,
+          "ppv_high": 0.16666666666666666,
+          "sufficient_sample": false
+        },
+        "Post Graduate Qualification": {
+          "n": 106,
+          "positives": 13,
+          "observed_rate": 0.12264150943396226,
+          "mean_predicted": 0.0850900016854692,
+          "mean_predicted_among_withdrawn": 0.1399197204621973,
+          "selection_rate_high": 0.1509433962264151,
+          "tpr_high": 0.38461538461538464,
+          "tpr_high_ci95": [
+            0.17709446581236818,
+            0.6447751902773146
+          ],
+          "fpr_high": 0.11827956989247312,
+          "ppv_high": 0.3125,
+          "sufficient_sample": false
+        }
+      },
+      "equal_opportunity_gap": 0.04301468100940392,
+      "selection_rate_ratio": 0.798913180841653,
+      "max_calibration_gap": 0.017633504810778883,
+      "groups_excluded_small_sample": [
+        "No Formal quals",
+        "Post Graduate Qualification"
+      ],
+      "gap_null": {
+        "method": "1000 permutations of group labels among withdrawn students",
+        "median": 0.048279352226720695,
+        "p95": 0.10318143580485607,
+        "p_value": 0.5754245754245755,
+        "within_module_median": 0.09741702541313704,
+        "within_module_p_value": 0.9370629370629371
+      },
+      "verdict": "within chance: random group labels give a gap this large at these group sizes",
+      "lowest_tpr_group": "A Level or Equivalent",
+      "highest_tpr_group": "Lower Than A Level",
+      "proxies": {
+        "A Level or Equivalent": {
+          "membership_auc_from_model_inputs": 0.5525716028731082,
+          "most_different_inputs": [
+            {
+              "feature": "code_module=GGG",
+              "label": "code_module=GGG",
+              "standardised_mean_difference": -0.16990980505943298
+            },
+            {
+              "feature": "studied_credits",
+              "label": "Credits studied this term",
+              "standardised_mean_difference": 0.152204230427742
+            },
+            {
+              "feature": "assessments_due",
+              "label": "Assessments due so far",
+              "standardised_mean_difference": 0.1439676433801651
+            },
+            {
+              "feature": "submitted_due_count",
+              "label": "Due assessments submitted",
+              "standardised_mean_difference": 0.13383165001869202
+            }
+          ]
+        },
+        "Lower Than A Level": {
+          "membership_auc_from_model_inputs": 0.6333351353879966,
+          "most_different_inputs": [
+            {
+              "feature": "code_module=GGG",
+              "label": "code_module=GGG",
+              "standardised_mean_difference": 0.3229198157787323
+            },
+            {
+              "feature": "submitted_due_count",
+              "label": "Due assessments submitted",
+              "standardised_mean_difference": -0.2977668046951294
+            },
+            {
+              "feature": "assessments_due",
+              "label": "Assessments due so far",
+              "standardised_mean_difference": -0.296492338180542
+            },
+            {
+              "feature": "weighted_score",
+              "label": "Weighted assessment score",
+              "standardised_mean_difference": -0.27209076285362244
+            }
+          ]
+        }
+      },
+      "threshold_review": {
+        "current_threshold": 0.14122656421985777,
+        "target_tpr": 0.5005302226935313,
+        "groups": {
+          "A Level or Equivalent": {
+            "current_tpr": 0.48205128205128206,
+            "current_selection_rate": 0.23958333333333334,
+            "current_ppv": 0.20958751393534003,
+            "equalising_threshold": 0.1377657302764543,
+            "tpr_at_equalising": 0.5025641025641026,
+            "selection_rate_at_equalising": 0.25106837606837606,
+            "ppv_at_equalising": 0.20851063829787234,
+            "change_in_flagged_students": 43
+          },
+          "HE Qualification": {
+            "current_tpr": 0.5,
+            "current_selection_rate": 0.2034843205574913,
+            "current_ppv": 0.2602739726027397,
+            "equalising_threshold": 0.13907199770979745,
+            "tpr_at_equalising": 0.506578947368421,
+            "selection_rate_at_equalising": 0.2062717770034843,
+            "ppv_at_equalising": 0.26013513513513514,
+            "change_in_flagged_students": 4
+          },
+          "Lower Than A Level": {
+            "current_tpr": 0.525065963060686,
+            "current_selection_rate": 0.25470141867370505,
+            "current_ppv": 0.25777202072538863,
+            "equalising_threshold": 0.14995133769797125,
+            "tpr_at_equalising": 0.5013192612137203,
+            "selection_rate_at_equalising": 0.2349059716265259,
+            "ppv_at_equalising": 0.26685393258426965,
+            "change_in_flagged_students": -60
+          }
+        }
+      }
+    },
+    "imd_band": {
+      "groups": {
+        "0-10%": {
+          "n": 720,
+          "positives": 81,
+          "observed_rate": 0.1125,
+          "mean_predicted": 0.11001557971607265,
+          "mean_predicted_among_withdrawn": 0.17593780241930665,
+          "selection_rate_high": 0.24722222222222223,
+          "tpr_high": 0.5308641975308642,
+          "tpr_high_ci95": [
+            0.42326527260622987,
+            0.6356680808430215
+          ],
+          "fpr_high": 0.2112676056338028,
+          "ppv_high": 0.24157303370786518,
+          "sufficient_sample": true
+        },
+        "10-20%": {
+          "n": 815,
+          "positives": 99,
+          "observed_rate": 0.12147239263803682,
+          "mean_predicted": 0.11196865052989691,
+          "mean_predicted_among_withdrawn": 0.15998997938911044,
+          "selection_rate_high": 0.29938650306748466,
+          "tpr_high": 0.5252525252525253,
+          "tpr_high_ci95": [
+            0.42779134155248744,
+            0.6208271163478176
+          ],
+          "fpr_high": 0.2681564245810056,
+          "ppv_high": 0.21311475409836064,
+          "sufficient_sample": true
+        },
+        "20-30%": {
+          "n": 881,
+          "positives": 124,
+          "observed_rate": 0.14074914869466515,
+          "mean_predicted": 0.11056520007536298,
+          "mean_predicted_among_withdrawn": 0.1842879006442643,
+          "selection_rate_high": 0.26787741203178206,
+          "tpr_high": 0.5806451612903226,
+          "tpr_high_ci95": [
+            0.4926480774593792,
+            0.663795521494326
+          ],
+          "fpr_high": 0.2166446499339498,
+          "ppv_high": 0.3050847457627119,
+          "sufficient_sample": true
+        },
+        "30-40%": {
+          "n": 885,
+          "positives": 101,
+          "observed_rate": 0.11412429378531073,
+          "mean_predicted": 0.10470515742328138,
+          "mean_predicted_among_withdrawn": 0.15464894916025754,
+          "selection_rate_high": 0.24067796610169492,
+          "tpr_high": 0.4752475247524752,
+          "tpr_high_ci95": [
+            0.3805571262165129,
+            0.5717518808951678
+          ],
+          "fpr_high": 0.21045918367346939,
+          "ppv_high": 0.22535211267605634,
+          "sufficient_sample": true
+        },
+        "40-50%": {
+          "n": 832,
+          "positives": 89,
+          "observed_rate": 0.10697115384615384,
+          "mean_predicted": 0.10672752160789985,
+          "mean_predicted_among_withdrawn": 0.17305292879498754,
+          "selection_rate_high": 0.2548076923076923,
+          "tpr_high": 0.550561797752809,
+          "tpr_high_ci95": [
+            0.4472614742822269,
+            0.6496778287888101
+          ],
+          "fpr_high": 0.2193808882907133,
+          "ppv_high": 0.23113207547169812,
+          "sufficient_sample": true
+        },
+        "50-60%": {
+          "n": 847,
+          "positives": 98,
+          "observed_rate": 0.11570247933884298,
+          "mean_predicted": 0.10157844950396333,
+          "mean_predicted_among_withdrawn": 0.1611634744745796,
+          "selection_rate_high": 0.2243211334120425,
+          "tpr_high": 0.47959183673469385,
+          "tpr_high_ci95": [
+            0.38332963929572583,
+            0.5773936800551093
+          ],
+          "fpr_high": 0.1909212283044059,
+          "ppv_high": 0.24736842105263157,
+          "sufficient_sample": true
+        },
+        "60-70%": {
+          "n": 817,
+          "positives": 90,
+          "observed_rate": 0.11015911872705018,
+          "mean_predicted": 0.09744583822532489,
+          "mean_predicted_among_withdrawn": 0.14346346289492987,
+          "selection_rate_high": 0.211750305997552,
+          "tpr_high": 0.4222222222222222,
+          "tpr_high_ci95": [
+            0.32542241309246966,
+            0.525390019773125
+          ],
+          "fpr_high": 0.1856946354883081,
+          "ppv_high": 0.21965317919075145,
+          "sufficient_sample": true
+        },
+        "70-80%": {
+          "n": 803,
+          "positives": 80,
+          "observed_rate": 0.099626400996264,
+          "mean_predicted": 0.10300334385125597,
+          "mean_predicted_among_withdrawn": 0.17843484118116856,
+          "selection_rate_high": 0.23163138231631383,
+          "tpr_high": 0.5375,
+          "tpr_high_ci95": [
+            0.4290416436680269,
+            0.6425218761121299
+          ],
+          "fpr_high": 0.19778699861687413,
+          "ppv_high": 0.23118279569892472,
+          "sufficient_sample": true
+        },
+        "80-90%": {
+          "n": 745,
+          "positives": 71,
+          "observed_rate": 0.0953020134228188,
+          "mean_predicted": 0.09846253534608472,
+          "mean_predicted_among_withdrawn": 0.149418785277125,
+          "selection_rate_high": 0.21476510067114093,
+          "tpr_high": 0.4225352112676056,
+          "tpr_high_ci95": [
+            0.3145283047701463,
+            0.5384946129654448
+          ],
+          "fpr_high": 0.19287833827893175,
+          "ppv_high": 0.1875,
+          "sufficient_sample": true
+        },
+        "90-100%": {
+          "n": 684,
+          "positives": 70,
+          "observed_rate": 0.1023391812865497,
+          "mean_predicted": 0.09648187388831218,
+          "mean_predicted_among_withdrawn": 0.14625062232786978,
+          "selection_rate_high": 0.20614035087719298,
+          "tpr_high": 0.38571428571428573,
+          "tpr_high_ci95": [
+            0.28047517785454174,
+            0.5028447935436945
+          ],
+          "fpr_high": 0.18566775244299674,
+          "ppv_high": 0.19148936170212766,
+          "sufficient_sample": true
+        },
+        "Unknown": {
+          "n": 348,
+          "positives": 40,
+          "observed_rate": 0.11494252873563218,
+          "mean_predicted": 0.09401578684529248,
+          "mean_predicted_among_withdrawn": 0.15246413185479332,
+          "selection_rate_high": 0.19540229885057472,
+          "tpr_high": 0.575,
+          "tpr_high_ci95": [
+            0.42194800436059987,
+            0.7149083147518411
+          ],
+          "fpr_high": 0.1461038961038961,
+          "ppv_high": 0.3382352941176471,
+          "sufficient_sample": true
+        }
+      },
+      "equal_opportunity_gap": 0.1949308755760369,
+      "selection_rate_ratio": 0.6526757113246656,
+      "max_calibration_gap": 0.030183948619302167,
+      "groups_excluded_small_sample": [],
+      "gap_null": {
+        "method": "1000 permutations of group labels among withdrawn students",
+        "median": 0.17746478873239435,
+        "p95": 0.26249999999999996,
+        "p_value": 0.3516483516483517,
+        "within_module_median": 0.1942014430884251,
+        "within_module_p_value": 0.4985014985014985
+      },
+      "verdict": "within chance: random group labels give a gap this large at these group sizes",
+      "lowest_tpr_group": "90-100%",
+      "highest_tpr_group": "20-30%",
+      "proxies": {
+        "90-100%": {
+          "membership_auc_from_model_inputs": 0.5272563992632476,
+          "most_different_inputs": [
+            {
+              "feature": "submitted_due_count",
+              "label": "Due assessments submitted",
+              "standardised_mean_difference": 0.20235717296600342
+            },
+            {
+              "feature": "submitted_count",
+              "label": "Assessments submitted",
+              "standardised_mean_difference": 0.18662181496620178
+            },
+            {
+              "feature": "weighted_score",
+              "label": "Weighted assessment score",
+              "standardised_mean_difference": 0.17804232239723206
+            },
+            {
+              "feature": "score_pct",
+              "label": "Score percentile in cohort",
+              "standardised_mean_difference": 0.16734515130519867
+            }
+          ]
+        },
+        "20-30%": {
+          "membership_auc_from_model_inputs": 0.523076098398904,
+          "most_different_inputs": [
+            {
+              "feature": "inactive_weeks_last3",
+              "label": "Inactive weeks (last 3)",
+              "standardised_mean_difference": 0.16335514187812805
+            },
+            {
+              "feature": "weeks_active",
+              "label": "Weeks with any activity",
+              "standardised_mean_difference": -0.13838616013526917
+            },
+            {
+              "feature": "longest_inactive_streak",
+              "label": "Longest inactive streak (weeks)",
+              "standardised_mean_difference": 0.13326092064380646
+            },
+            {
+              "feature": "cma_mean_score",
+              "label": "Computer-marked assessment average",
+              "standardised_mean_difference": -0.12652714550495148
+            }
+          ]
+        }
+      },
+      "threshold_review": {
+        "current_threshold": 0.14122656421985777,
+        "target_tpr": 0.5005302226935313,
+        "groups": {
+          "0-10%": {
+            "current_tpr": 0.5308641975308642,
+            "current_selection_rate": 0.24722222222222223,
+            "current_ppv": 0.24157303370786518,
+            "equalising_threshold": 0.15500477144501743,
+            "tpr_at_equalising": 0.5061728395061729,
+            "selection_rate_at_equalising": 0.2222222222222222,
+            "ppv_at_equalising": 0.25625,
+            "change_in_flagged_students": -18
+          },
+          "10-20%": {
+            "current_tpr": 0.5252525252525253,
+            "current_selection_rate": 0.29938650306748466,
+            "current_ppv": 0.21311475409836064,
+            "equalising_threshold": 0.1503322964933693,
+            "tpr_at_equalising": 0.5050505050505051,
+            "selection_rate_at_equalising": 0.27975460122699386,
+            "ppv_at_equalising": 0.21929824561403508,
+            "change_in_flagged_students": -16
+          },
+          "20-30%": {
+            "current_tpr": 0.5806451612903226,
+            "current_selection_rate": 0.26787741203178206,
+            "current_ppv": 0.3050847457627119,
+            "equalising_threshold": 0.15087091502367356,
+            "tpr_at_equalising": 0.5080645161290323,
+            "selection_rate_at_equalising": 0.22814982973893302,
+            "ppv_at_equalising": 0.31343283582089554,
+            "change_in_flagged_students": -35
+          },
+          "30-40%": {
+            "current_tpr": 0.4752475247524752,
+            "current_selection_rate": 0.24067796610169492,
+            "current_ppv": 0.22535211267605634,
+            "equalising_threshold": 0.13592730804167036,
+            "tpr_at_equalising": 0.504950495049505,
+            "selection_rate_at_equalising": 0.2576271186440678,
+            "ppv_at_equalising": 0.2236842105263158,
+            "change_in_flagged_students": 15
+          },
+          "40-50%": {
+            "current_tpr": 0.550561797752809,
+            "current_selection_rate": 0.2548076923076923,
+            "current_ppv": 0.23113207547169812,
+            "equalising_threshold": 0.15751876284350003,
+            "tpr_at_equalising": 0.5056179775280899,
+            "selection_rate_at_equalising": 0.20673076923076922,
+            "ppv_at_equalising": 0.2616279069767442,
+            "change_in_flagged_students": -40
+          },
+          "50-60%": {
+            "current_tpr": 0.47959183673469385,
+            "current_selection_rate": 0.2243211334120425,
+            "current_ppv": 0.24736842105263157,
+            "equalising_threshold": 0.13695453449638506,
+            "tpr_at_equalising": 0.5102040816326531,
+            "selection_rate_at_equalising": 0.2396694214876033,
+            "ppv_at_equalising": 0.24630541871921183,
+            "change_in_flagged_students": 13
+          },
+          "60-70%": {
+            "current_tpr": 0.4222222222222222,
+            "current_selection_rate": 0.211750305997552,
+            "current_ppv": 0.21965317919075145,
+            "equalising_threshold": 0.11669050351771512,
+            "tpr_at_equalising": 0.5111111111111111,
+            "selection_rate_at_equalising": 0.29498164014687883,
+            "ppv_at_equalising": 0.1908713692946058,
+            "change_in_flagged_students": 68
+          },
+          "70-80%": {
+            "current_tpr": 0.5375,
+            "current_selection_rate": 0.23163138231631383,
+            "current_ppv": 0.23118279569892472,
+            "equalising_threshold": 0.15311890176075593,
+            "tpr_at_equalising": 0.5125,
+            "selection_rate_at_equalising": 0.2054794520547945,
+            "ppv_at_equalising": 0.24848484848484848,
+            "change_in_flagged_students": -21
+          },
+          "80-90%": {
+            "current_tpr": 0.4225352112676056,
+            "current_selection_rate": 0.21476510067114093,
+            "current_ppv": 0.1875,
+            "equalising_threshold": 0.1304988377081277,
+            "tpr_at_equalising": 0.5070422535211268,
+            "selection_rate_at_equalising": 0.2536912751677852,
+            "ppv_at_equalising": 0.19047619047619047,
+            "change_in_flagged_students": 29
+          },
+          "90-100%": {
+            "current_tpr": 0.38571428571428573,
+            "current_selection_rate": 0.20614035087719298,
+            "current_ppv": 0.19148936170212766,
+            "equalising_threshold": 0.122344691513484,
+            "tpr_at_equalising": 0.5142857142857142,
+            "selection_rate_at_equalising": 0.27485380116959063,
+            "ppv_at_equalising": 0.19148936170212766,
+            "change_in_flagged_students": 47
+          },
+          "Unknown": {
+            "current_tpr": 0.575,
+            "current_selection_rate": 0.19540229885057472,
+            "current_ppv": 0.3382352941176471,
+            "equalising_threshold": 0.14568196894122906,
+            "tpr_at_equalising": 0.525,
+            "selection_rate_at_equalising": 0.1752873563218391,
+            "ppv_at_equalising": 0.3442622950819672,
+            "change_in_flagged_students": -7
+          }
+        }
+      }
+    },
+    "age_band": {
+      "groups": {
+        "0-35": {
+          "n": 5721,
+          "positives": 642,
+          "observed_rate": 0.11221814368117462,
+          "mean_predicted": 0.10755706727194077,
+          "mean_predicted_among_withdrawn": 0.16631239923772298,
+          "selection_rate_high": 0.254326166754064,
+          "tpr_high": 0.5171339563862928,
+          "tpr_high_ci95": [
+            0.47849224126885903,
+            0.5555718388399478
+          ],
+          "fpr_high": 0.2211065170309116,
+          "ppv_high": 0.2281786941580756,
+          "sufficient_sample": true
+        },
+        "35-55": {
+          "n": 2577,
+          "positives": 292,
+          "observed_rate": 0.11331005044625533,
+          "mean_predicted": 0.09559271626654513,
+          "mean_predicted_among_withdrawn": 0.15713154158887457,
+          "selection_rate_high": 0.2045013581684129,
+          "tpr_high": 0.4691780821917808,
+          "tpr_high_ci95": [
+            0.4127086738779119,
+            0.526447955886124
+          ],
+          "fpr_high": 0.17067833698030635,
+          "ppv_high": 0.25996204933586337,
+          "sufficient_sample": true
+        },
+        "55<=": {
+          "n": 79,
+          "positives": 9,
+          "observed_rate": 0.11392405063291139,
+          "mean_predicted": 0.10235601932476145,
+          "mean_predicted_among_withdrawn": 0.13703508378993157,
+          "selection_rate_high": 0.24050632911392406,
+          "tpr_high": 0.3333333333333333,
+          "tpr_high_ci95": [
+            0.12058159868274293,
+            0.6458026525009102
+          ],
+          "fpr_high": 0.22857142857142856,
+          "ppv_high": 0.15789473684210525,
+          "sufficient_sample": false
+        }
+      },
+      "equal_opportunity_gap": 0.04795587419451197,
+      "selection_rate_ratio": 0.8040909072725018,
+      "max_calibration_gap": 0.017717334179710206,
+      "groups_excluded_small_sample": [
+        "55<="
+      ],
+      "gap_null": {
+        "method": "1000 permutations of group labels among withdrawn students",
+        "median": 0.021796184867494517,
+        "p95": 0.06788503392651385,
+        "p_value": 0.17382617382617382,
+        "within_module_median": 0.028336107199248894,
+        "within_module_p_value": 0.25874125874125875
+      },
+      "verdict": "within chance: random group labels give a gap this large at these group sizes",
+      "lowest_tpr_group": "35-55",
+      "highest_tpr_group": "0-35",
+      "proxies": {
+        "35-55": {
+          "membership_auc_from_model_inputs": 0.6777668165335261,
+          "most_different_inputs": [
+            {
+              "feature": "clicks_pct",
+              "label": "Activity percentile in cohort",
+              "standardised_mean_difference": 0.4428741931915283
+            },
+            {
+              "feature": "planned_coverage",
+              "label": "Share of scheduled materials opened",
+              "standardised_mean_difference": 0.37169069051742554
+            },
+            {
+              "feature": "active_days_pct",
+              "label": "Active-days percentile in cohort",
+              "standardised_mean_difference": 0.3178480565547943
+            },
+            {
+              "feature": "clicks_per_active_day",
+              "label": "Activity per active day",
+              "standardised_mean_difference": 0.31375861167907715
+            }
+          ]
+        },
+        "0-35": {
+          "membership_auc_from_model_inputs": 0.684004765785744,
+          "most_different_inputs": [
+            {
+              "feature": "clicks_pct",
+              "label": "Activity percentile in cohort",
+              "standardised_mean_difference": -0.4667929708957672
+            },
+            {
+              "feature": "planned_coverage",
+              "label": "Share of scheduled materials opened",
+              "standardised_mean_difference": -0.3919731080532074
+            },
+            {
+              "feature": "active_days_pct",
+              "label": "Active-days percentile in cohort",
+              "standardised_mean_difference": -0.3377884328365326
+            },
+            {
+              "feature": "total_clicks",
+              "label": "VLE activity (clicks)",
+              "standardised_mean_difference": -0.33425405621528625
+            }
+          ]
+        }
+      },
+      "threshold_review": {
+        "current_threshold": 0.14122656421985777,
+        "target_tpr": 0.5005302226935313,
+        "groups": {
+          "0-35": {
+            "current_tpr": 0.5171339563862928,
+            "current_selection_rate": 0.254326166754064,
+            "current_ppv": 0.2281786941580756,
+            "equalising_threshold": 0.14643073605875873,
+            "tpr_at_equalising": 0.5015576323987538,
+            "selection_rate_at_equalising": 0.2392938297500437,
+            "ppv_at_equalising": 0.2352081811541271,
+            "change_in_flagged_students": -86
+          },
+          "35-55": {
+            "current_tpr": 0.4691780821917808,
+            "current_selection_rate": 0.2045013581684129,
+            "current_ppv": 0.25996204933586337,
+            "equalising_threshold": 0.13215212874994203,
+            "tpr_at_equalising": 0.5034246575342466,
+            "selection_rate_at_equalising": 0.22778424524641055,
+            "ppv_at_equalising": 0.2504258943781942,
+            "change_in_flagged_students": 60
+          }
+        }
+      }
+    },
+    "disability": {
+      "groups": {
+        "N": {
+          "n": 7640,
+          "positives": 828,
+          "observed_rate": 0.10837696335078534,
+          "mean_predicted": 0.10202557862386456,
+          "mean_predicted_among_withdrawn": 0.1576500355079313,
+          "selection_rate_high": 0.23049738219895288,
+          "tpr_high": 0.4722222222222222,
+          "tpr_high_ci95": [
+            0.43842411764965317,
+            0.5062768927350162
+          ],
+          "fpr_high": 0.20111567821491486,
+          "ppv_high": 0.2220329358319137,
+          "sufficient_sample": true
+        },
+        "Y": {
+          "n": 737,
+          "positives": 115,
+          "observed_rate": 0.1560379918588874,
+          "mean_predicted": 0.12250626393757251,
+          "mean_predicted_among_withdrawn": 0.20307875485314617,
+          "selection_rate_high": 0.3256445047489824,
+          "tpr_high": 0.7043478260869566,
+          "tpr_high_ci95": [
+            0.615430995756793,
+            0.7800534137429108
+          ],
+          "fpr_high": 0.25562700964630225,
+          "ppv_high": 0.3375,
+          "sufficient_sample": true
+        }
+      },
+      "equal_opportunity_gap": 0.23212560386473435,
+      "selection_rate_ratio": 0.7078190445026178,
+      "max_calibration_gap": 0.03353172792131488,
+      "groups_excluded_small_sample": [],
+      "gap_null": {
+        "method": "1000 permutations of group labels among withdrawn students",
+        "median": 0.034057971014492816,
+        "p95": 0.09468599033816433,
+        "p_value": 0.000999000999000999,
+        "within_module_median": 0.034057971014492816,
+        "within_module_p_value": 0.000999000999000999
+      },
+      "verdict": "beyond chance, also within modules: review",
+      "lowest_tpr_group": "N",
+      "highest_tpr_group": "Y",
+      "proxies": {
+        "N": {
+          "membership_auc_from_model_inputs": 0.5759107248147648,
+          "most_different_inputs": [
+            {
+              "feature": "weighted_score",
+              "label": "Weighted assessment score",
+              "standardised_mean_difference": 0.24911612272262573
+            },
+            {
+              "feature": "code_module=GGG",
+              "label": "code_module=GGG",
+              "standardised_mean_difference": -0.238230362534523
+            },
+            {
+              "feature": "last_score",
+              "label": "Most recent score",
+              "standardised_mean_difference": 0.23261114954948425
+            },
+            {
+              "feature": "score_pct",
+              "label": "Score percentile in cohort",
+              "standardised_mean_difference": 0.22350794076919556
+            }
+          ]
+        },
+        "Y": {
+          "membership_auc_from_model_inputs": 0.5759107248147648,
+          "most_different_inputs": [
+            {
+              "feature": "weighted_score",
+              "label": "Weighted assessment score",
+              "standardised_mean_difference": -0.24911612272262573
+            },
+            {
+              "feature": "code_module=GGG",
+              "label": "code_module=GGG",
+              "standardised_mean_difference": 0.238230362534523
+            },
+            {
+              "feature": "last_score",
+              "label": "Most recent score",
+              "standardised_mean_difference": -0.23261114954948425
+            },
+            {
+              "feature": "score_pct",
+              "label": "Score percentile in cohort",
+              "standardised_mean_difference": -0.22350794076919556
+            }
+          ]
+        }
+      },
+      "threshold_review": {
+        "current_threshold": 0.14122656421985777,
+        "target_tpr": 0.5005302226935313,
+        "groups": {
+          "N": {
+            "current_tpr": 0.4722222222222222,
+            "current_selection_rate": 0.23049738219895288,
+            "current_ppv": 0.2220329358319137,
+            "equalising_threshold": 0.13446480129234584,
+            "tpr_at_equalising": 0.501207729468599,
+            "selection_rate_at_equalising": 0.25157068062827226,
+            "ppv_at_equalising": 0.21592091571279917,
+            "change_in_flagged_students": 161
+          },
+          "Y": {
+            "current_tpr": 0.7043478260869566,
+            "current_selection_rate": 0.3256445047489824,
+            "current_ppv": 0.3375,
+            "equalising_threshold": 0.18790426610843805,
+            "tpr_at_equalising": 0.5043478260869565,
+            "selection_rate_at_equalising": 0.20352781546811397,
+            "ppv_at_equalising": 0.38666666666666666,
+            "change_in_flagged_students": -90
+          }
+        }
+      }
+    }
+  },
+  "interpretation": "Descriptive audit. Gaps can arise from different base rates even when sensitive attributes are excluded from the model (proxies). Review groups with equal_opportunity_gap > 0.15 or selection_rate_ratio < 0.8 (four-fifths rule) before deployment. gap_null is the gap that random group labels give at the same group sizes; a gap inside it is not evidence of a group difference. threshold_review is for policy review only: group-specific cut-offs would use a sensitive attribute at decision time, so they are not applied."
+}

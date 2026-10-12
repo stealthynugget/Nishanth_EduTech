@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
 
-from ssa.data.pipeline import LABEL_COLUMNS, SCOPE_COLUMNS, build_features
-from ssa.data.synthetic import write_synthetic_oulad
-from ssa.models.features import NUMERIC, FeatureEncoder
+from src.models.features import NUMERIC, FeatureEncoder
+from src.pipeline.pipeline import LABEL_COLUMNS, SCOPE_COLUMNS, build_features
+from src.pipeline.synthetic import write_synthetic_oulad
 
 
 def _raw(tmp_path):

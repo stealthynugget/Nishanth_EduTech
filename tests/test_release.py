@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from ssa.cli import quality_gate, secret_scan
+from src.cli import quality_gate, secret_scan
 
 ROOT = Path(__file__).resolve().parents[1]
 

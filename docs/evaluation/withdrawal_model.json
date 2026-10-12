@@ -1,0 +1,277 @@
+{
+  "test": {
+    "n": 8377,
+    "positive_rate": 0.11257013250567029,
+    "roc_auc": 0.7255685308195328,
+    "pr_auc": 0.26301911267610545,
+    "brier": 0.09263649781211399,
+    "log_loss": 0.3186435406111674,
+    "ece_10": 0.008742683871515326,
+    "roc_auc_95ci": {
+      "lower": 0.7076739828305996,
+      "upper": 0.7400489384532395,
+      "n_boot": 300
+    }
+  },
+  "historical_out_of_fold": {
+    "n": 16827,
+    "positive_rate": 0.10887264515362216,
+    "roc_auc": 0.7343106726987598,
+    "pr_auc": 0.25702291887550904,
+    "brier": 0.08952318055082886,
+    "log_loss": 0.30930093091718264,
+    "ece_10": 0.006109591886914804
+  },
+  "thresholds": {
+    "medium": 0.0771072325145041,
+    "high": 0.14122656421985777,
+    "method": "validation_f1_above_medium",
+    "medium_recall_target": 0.8,
+    "validation": {
+      "medium": {
+        "threshold": 0.0771072325145041,
+        "precision": 0.16940143286341577,
+        "recall": 0.8002183406113537,
+        "flag_rate": 0.5142925060914008
+      },
+      "high": {
+        "threshold": 0.14122656421985777,
+        "precision": 0.23717059639389737,
+        "recall": 0.5600436681222707,
+        "flag_rate": 0.257086824745944
+      }
+    }
+  },
+  "test_at_high_threshold": {
+    "precision": 0.23588205897051473,
+    "recall": 0.5005302226935313,
+    "f1": 0.32065217391304346,
+    "flag_rate": 0.23886832995105647
+  },
+  "test_at_medium_threshold": {
+    "precision": 0.1720876585928489,
+    "recall": 0.7910922587486744,
+    "flag_rate": 0.5174883609884207
+  },
+  "test_tiers": {
+    "High": {
+      "n": 2001,
+      "share": 0.23886832995105647,
+      "observed_withdrawal_rate": 0.23588205897051473,
+      "share_of_all_withdrawals": 0.5005302226935313
+    },
+    "Medium": {
+      "n": 2334,
+      "share": 0.2786200310373642,
+      "observed_withdrawal_rate": 0.11739502999143102,
+      "share_of_all_withdrawals": 0.29056203605514314
+    },
+    "Low": {
+      "n": 4042,
+      "share": 0.48251163901157934,
+      "observed_withdrawal_rate": 0.0487382483918852,
+      "share_of_all_withdrawals": 0.20890774125132555
+    }
+  },
+  "test_capacity": [
+    {
+      "fraction": 0.05,
+      "k": 419,
+      "precision": 0.34844868735083534,
+      "recall": 0.15482502651113467,
+      "lift": 3.095391997813306,
+      "max_possible_recall": 0.4443266171792153
+    },
+    {
+      "fraction": 0.1,
+      "k": 838,
+      "precision": 0.2935560859188544,
+      "recall": 0.2608695652173913,
+      "lift": 2.6077617515824425,
+      "max_possible_recall": 0.8886532343584306
+    },
+    {
+      "fraction": 0.2,
+      "k": 1675,
+      "precision": 0.24895522388059702,
+      "recall": 0.44220572640509015,
+      "lift": 2.2115566388629495,
+      "max_possible_recall": 1.0
+    },
+    {
+      "fraction": 0.3,
+      "k": 2513,
+      "precision": 0.2200557103064067,
+      "recall": 0.5864262990455992,
+      "lift": 1.9548321158396276,
+      "max_possible_recall": 1.0
+    }
+  ],
+  "test_reliability": [
+    {
+      "bin": "0.0-0.1",
+      "n": 5071,
+      "mean_predicted": 0.05471873501469457,
+      "observed_rate": 0.05738513113784263
+    },
+    {
+      "bin": "0.1-0.2",
+      "n": 2298,
+      "mean_predicted": 0.14005955133404613,
+      "observed_rate": 0.16013925152306355
+    },
+    {
+      "bin": "0.2-0.3",
+      "n": 766,
+      "mean_predicted": 0.240407456211502,
+      "observed_rate": 0.2454308093994778
+    },
+    {
+      "bin": "0.3-0.4",
+      "n": 201,
+      "mean_predicted": 0.33850370272569785,
+      "observed_rate": 0.36318407960199006
+    },
+    {
+      "bin": "0.4-0.5",
+      "n": 34,
+      "mean_predicted": 0.42649738270700205,
+      "observed_rate": 0.5294117647058824
+    },
+    {
+      "bin": "0.5-0.6",
+      "n": 7,
+      "mean_predicted": 0.5335308950354439,
+      "observed_rate": 0.7142857142857143
+    }
+  ],
+  "baseline_logistic_regression_test": {
+    "n": 8377,
+    "positive_rate": 0.11257013250567029,
+    "roc_auc": 0.703282416548768,
+    "pr_auc": 0.2373896964130875,
+    "brier": 0.0943625467175767,
+    "log_loss": 0.32691737391621883,
+    "ece_10": 0.01940510201517933
+  },
+  "split": {
+    "method": "temporal",
+    "train": [
+      "2013B",
+      "2013J"
+    ],
+    "validation": [
+      "2014B"
+    ],
+    "test": [
+      "2014J"
+    ]
+  },
+  "engine": "xgboost",
+  "selected_config": {
+    "learning_rate": 0.08,
+    "depth": 3,
+    "min_leaf": 20,
+    "l2": 0.5,
+    "subsample": 0.85,
+    "colsample": 0.8
+  },
+  "hyperparameter_search": [
+    {
+      "config": {
+        "learning_rate": 0.05,
+        "depth": 4,
+        "min_leaf": 40,
+        "l2": 1.0,
+        "subsample": 0.85,
+        "colsample": 0.8
+      },
+      "val_pr_auc": 0.28223723480002233,
+      "iterations": 70
+    },
+    {
+      "config": {
+        "learning_rate": 0.05,
+        "depth": 6,
+        "min_leaf": 60,
+        "l2": 2.0,
+        "subsample": 0.85,
+        "colsample": 0.8
+      },
+      "val_pr_auc": 0.2740264148255126,
+      "iterations": 88
+    },
+    {
+      "config": {
+        "learning_rate": 0.03,
+        "depth": 5,
+        "min_leaf": 80,
+        "l2": 5.0,
+        "subsample": 0.85,
+        "colsample": 0.8
+      },
+      "val_pr_auc": 0.28320811446415606,
+      "iterations": 97
+    },
+    {
+      "config": {
+        "learning_rate": 0.08,
+        "depth": 3,
+        "min_leaf": 20,
+        "l2": 0.5,
+        "subsample": 0.85,
+        "colsample": 0.8
+      },
+      "val_pr_auc": 0.2915534848113569,
+      "iterations": 51
+    }
+  ],
+  "train_seconds": 4.3,
+  "protocol": "config on validation; LOPO out-of-fold calibration+thresholds; refit on all historical presentations",
+  "global_importance_test": {
+    "Missed assessments": 0.15098623931407928,
+    "Average assessment score": 0.14465002715587616,
+    "Score percentile in cohort": 0.1285749226808548,
+    "Average days submitted before deadline": 0.10553442686796188,
+    "Tutor-marked assignments missed": 0.09945375472307205,
+    "Lowest score": 0.0896458849310875,
+    "Highest score": 0.07958342880010605,
+    "Module": 0.07197745144367218,
+    "Relative weekly engagement trend": 0.065945565700531,
+    "Assessments due so far": 0.06325087696313858,
+    "Late submission rate": 0.051485683768987656,
+    "Credits studied this term": 0.05078485608100891,
+    "Scheduled materials so far": 0.04805276542901993,
+    "Missed-assessment percentile in cohort": 0.04527875408530235,
+    "Share of due assessments missed": 0.04456937685608864,
+    "Days since last VLE activity": 0.043854549527168274,
+    "Engagement decline ratio": 0.041868213564157486,
+    "Recent engagement momentum": 0.03950497508049011,
+    "Weekly engagement trend": 0.030080212280154228,
+    "Course day of snapshot": 0.029293712228536606
+  },
+  "population_audit": {
+    "available": true,
+    "test_presentation": "2014J",
+    "all_enrolments_including_already_withdrawn": {
+      "n": 11260,
+      "positive_rate": 0.33978685612788634,
+      "roc_auc": 0.7493848462743269,
+      "pr_auc": 0.518786939562194,
+      "brier": 0.2566069839452115,
+      "log_loss": 0.7482784567565101,
+      "ece_10": 0.22518896898382526
+    },
+    "in_scope_only": {
+      "n": 8377,
+      "positive_rate": 0.11257013250567029,
+      "roc_auc": 0.7255685308195328,
+      "pr_auc": 0.26301911267610545,
+      "brier": 0.09263649781211399,
+      "log_loss": 0.3186435406111674,
+      "ece_10": 0.008742683871515326
+    },
+    "already_withdrawn_share_of_test_withdrawals": 0.7535284892838474,
+    "note": "Scoring students who already left inflates ROC-AUC; only the in-scope figure is a valid early-warning estimate."
+  }
+}

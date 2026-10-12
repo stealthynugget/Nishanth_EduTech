@@ -1,8 +1,8 @@
 import json
 import re
 
-from ssa.agents.llm import FakeLLM
-from ssa.agents.workflow import SupportWorkflow
+from src.agents.llm import FakeLLM
+from src.agents.workflow import SupportWorkflow
 
 
 def _ctx(service, features, high=True):
