@@ -335,8 +335,10 @@ def build_presentation(s: Settings | None = None, out: Path | None = None) -> Pa
     # 5 ---------------------------------------------------------------- architecture
     sl = slide("Architecture", "Offline build per checkpoint, online agents behind FastAPI",
                notes="Bottom: dataset, preprocessing, one document per enrolment, embeddings, LanceDB plus BM25, model training. "
-                     "Middle: React console, FastAPI with input guardrails, the LangGraph workflow. Claude drafts text; code "
-                     "decides facts; every step has a computed fallback. Evaluation and the feedback loop alongside.")
+                     "Middle: React console, FastAPI with input guardrails, then the support-plan workflow: evidence assembled "
+                     "in code, the LangGraph agents (performance, risk, router and intervention, critic), then the precedent "
+                     "synthesis. Claude Sonnet drafts text; code decides facts; every step has a computed fallback. Evaluation "
+                     "and the feedback loop alongside.")
     if arch.exists():
         sl.shapes.add_picture(str(arch), Inches(0.75), Inches(1.32), width=Inches(11.85))
 

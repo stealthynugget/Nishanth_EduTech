@@ -76,10 +76,13 @@ generated text is labelled and checked; everything still works with the LLM swit
 
 **Online (middle), per request**: the **Web UI** (React console) calls the **FastAPI** gateway (API key, rate limit,
 schema validation, injection screening). Direct tools (cohort, prediction, ranking, case search, insights, copilot) are
-answered from the computed services. A support-plan request runs the **LangGraph workflow**: (01) evidence assembly from
-the **ML models** and the **hybrid retriever**, (02) performance analysis, (03) risk assessment, (04) routing and
-intervention planning, (05) the critic with one revision, (06) precedent synthesis; the **LLM** (Claude) drafts text in
-02, 03, 04 and 06, each with a computed fallback. The **support plan** streams back to the console step by step.
+answered from the computed services (the copilot and outreach rewrites call Claude directly). A support-plan request
+(`POST /api/jobs/analyze`) runs the **support-plan workflow**: (01) evidence assembly in code from the **ML models** and
+the **hybrid retriever** (scores, drivers, 6 similar cases, numbered observations, eligible actions); then the
+**LangGraph** state graph: (02) performance analysis, (03) risk assessment, (04) routing and intervention planning,
+(05) the critic, with one revision or the deterministic planner; then (06) precedent synthesis. The **LLM** (Claude
+Sonnet) drafts text in 02, 03, 04 and 06, each with a computed fallback. The request runs as a background job; the
+console shows each step as it finishes and then the **support plan**.
 **Evaluation** scores agent outputs offline and on a sample of live traffic; the **feedback loop** turns advisor ratings
 into approved updates.
 

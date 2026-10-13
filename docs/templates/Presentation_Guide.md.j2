@@ -51,8 +51,10 @@ evaluation. Everything is "as of" a week in the course: weeks {{ weeks|join(", "
 
 **5. Architecture.** Bottom: the offline build: dataset, preprocessing, one document per enrolment, embeddings, LanceDB
 plus BM25, and model training, once per checkpoint. Middle: the request path: React console, FastAPI with input
-guardrails, then the LangGraph workflow: evidence, performance, risk, intervention, critic, synthesis. Claude drafts text;
-code decides facts. Every LLM step has a computed fallback. Evaluation and the feedback loop sit alongside.
+guardrails, then the support-plan workflow: evidence assembled in code from the models and the retriever; the LangGraph
+agents (performance, risk, router and intervention, critic with one revision); then the precedent synthesis. Claude
+Sonnet drafts text; code decides facts. Every LLM step has a computed fallback. Evaluation and the feedback loop sit
+alongside.
 
 **6. Data flow.** OULAD's seven tables become snapshot features at each checkpoint, using only data dated before that
 day. The key rule: we only score students who are still enrolled. If you also score students who already left, ROC-AUC
