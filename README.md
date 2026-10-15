@@ -38,6 +38,7 @@ models, and evaluation with DeepEval, RAGAS and an LLM judge.
   RAGAS, LLM-as-judge, human review; an approval-gated feedback loop.
 
 ![Landing page file](docs/screenshots/landing.jpg)
+
 ![Student case file](docs/screenshots/student.jpg)
 
 ## Problem statement
